@@ -20,7 +20,7 @@
         $(function() {
             var socket = io();
             $('form').submit(function(){
-                socket.emit('chat message', $('#m').val());
+                socket.emit('chat message', $('#m').val(), $('#n').val());
                 $('#m').val('');
                 return false;
             });
@@ -34,7 +34,7 @@
   <body>
     <ul id="messages"></ul>
     <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <input id="m" autocomplete="off" /><button id="send" >Send</button>
     </form>
   </body>
 </html>
