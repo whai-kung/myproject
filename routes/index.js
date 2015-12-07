@@ -1,8 +1,10 @@
+var express = require('express');
+var router = express.Router();
 
-/*
- * GET home page.
- */
+/* GET Hello World page. */
+router.get('/', function(req, res) {
+    res.render('helloworld', { title: 'Hello, World!' });
+});
 
-exports.index = function(req, res){
-  res.render('index', { title: 'Express' })
-};
+module.exports = router;
+
