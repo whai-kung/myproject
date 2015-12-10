@@ -24,14 +24,8 @@ app.use(bodyParser.json())
 //var routes = require('./routes/index');
 app.use('/todos', todoService)
 
-//set views
-//app.set('views', path.join(__dirname, 'views'));
 app.use(feathers.static(path.join(__dirname, 'public')));
-app.use('/', feathers.static(path.join(__dirname, 'views')));
-
-/*app.get('/', function (req, res) {
-   res.send('Hello World3');
-})*/
+app.use('/', feathers.static(path.join(__dirname, 'www')));
 
 //set icon
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
