@@ -7,7 +7,17 @@ module.exports = function(grunt) {
         // JS TASKS ================================================================
         // check all js files for errors
         jshint: {
-            all: ['public/js/**/*.js'] 
+            options: {
+                curly: true,
+                eqeqeq: true,
+                eqnull: true,
+                browser: true,
+                globals: {
+                    jQuery: true
+                },
+            },
+            uses_defaults: ['javascript/**/*.js', 'javascript/*.js']
+            //all: ['public/js/**/*.js'],
         },
         
         // take all the js files and minify them into app.min.js
@@ -24,7 +34,7 @@ module.exports = function(grunt) {
         less: {
             build: {
                 files: {
-                    'public/css/style.css': ['less/**/*.less', 'less/*.less']
+                    'public/css/style.css': ['less/style.less']
                 }
             }
         },

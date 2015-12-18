@@ -28,7 +28,7 @@ app.use(feathers.static(path.join(__dirname, 'public')));
 app.use('/', feathers.static(path.join(__dirname, 'www')));
 
 //set icon
-app.use(favicon(__dirname + '/public/images/favicon.ico'));
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var server = app.listen(nconf.get('http:port'), function(){
     var host = server.address().address

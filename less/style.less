@@ -1,8 +1,46 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import "common.less";
+@import "home.less";
+
+@lightgreen: rgba(139, 195, 74, 0.5);
+@green: #8bc34a;
+@red: #F10909;
+@lightblue: #00B7FF;
+@orange: rgba(195,191, 74, 0.5);
+@black: #000;
+@gray: #808080;
+
+@screen-xs: 320px;
+@screen-s: 480px;
+@screen-m: 768px;
+@screen-l: 992px;
+@screen-xl: 1200px;
+
+@media screen and (min-width: @screen-m){
+	.jumbotron h1, 
+	.jumbotron .h1 {
+		font-size: 75px;
+	}
+}
+
+body{
+	font-family: 'Pacifico', sans-serif;
+	font-size: 15px;
+}
+
+p, input, textarea{
+	font-family: 'Varela Round', serif;
+}
+
+p {
+    color: @gray;
 }
 
 a {
-  color: #00B7FF;
+    text-decoration: none;
 }
+
+a:hover, a:focus {
+    color: @red;
+}
+
+
