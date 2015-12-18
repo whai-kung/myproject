@@ -17,14 +17,17 @@ module.exports = function(grunt) {
                 },
             },
             uses_defaults: ['javascript/**/*.js', 'javascript/*.js']
-            //all: ['public/js/**/*.js'],
         },
         
         // take all the js files and minify them into app.min.js
         uglify: {
             build: {
                 files: {
-                    'public/js/app.min.js': ['javascript/**/*.js', 'javascript/*.js']
+                    'public/js/custom.min.js': ['javascript/custom.js'],
+                    'public/js/init.min.js': ['javascript/init.js'],
+                    'public/js/app.min.js': ['javascript/app.js'],
+                    'public/js/services.min.js': ['javascript/services.js']
+                    //'public/js/services.min.js': ['javascript/**/*.js', 'javascript/*.js']
                 }
             }
         },
