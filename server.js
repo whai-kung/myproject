@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 
 //include file
 var todoService = require('./service/todos');
+var loginService = require('./service/login');
 
 /***** get config ******/
 var commentedJsonFormat = require('nconf-strip-json-comments').format;
@@ -23,6 +24,7 @@ app.use(bodyParser.json())
 //api routes
 //var routes = require('./routes/index');
 app.use('/todos', todoService)
+app.use('/login', loginService)
 
 app.use(feathers.static(path.join(__dirname, 'public')));
 app.use('/', feathers.static(path.join(__dirname, 'www')));

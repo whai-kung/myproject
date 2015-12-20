@@ -23,12 +23,20 @@ module.exports = function(grunt) {
         uglify: {
             build: {
                 files: {
-                    'public/js/custom.min.js': ['javascript/custom.js'],
-                    'public/js/init.min.js': ['javascript/init.js'],
-                    'public/js/app.min.js': ['javascript/app.js'],
-                    'public/js/services.min.js': ['javascript/services.js']
-                    //'public/js/services.min.js': ['javascript/**/*.js', 'javascript/*.js']
+                    'public/js/init.min.js': ['javascript/angular/init.js'],
+                    'public/js/services.min.js': ['javascript/angular/services.js'],
+                    'public/js/custom.min.js': ['javascript/*.js']
                 }
+            }
+        },
+        
+        // copy angularjs App from javascript to public/js
+        copy: {
+            files: {
+                expand: true,
+                cwd: 'javascript/angular',
+                src: ['**/*.js'],
+                dest: 'public/js'
             }
         },
 
@@ -60,7 +68,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['javascript/**/*.js'],
-                tasks: ['jshint', 'uglify']
+                tasks: ['jshint', 'uglify', 'copy']
             }
         },
 
@@ -101,6 +109,7 @@ module.exports = function(grunt) {
     });
 
     //dependent plugins
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
@@ -108,7 +117,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
- 
+
     //tasks
-    grunt.registerTask('default', ['less', 'cssmin', 'jshint', 'uglify', 'concurrent']);
+    grunt.registerTask('default', ['less', 'cssmin', 'jshint', 'uglify', 'copy', 'concurrent']);
 }
