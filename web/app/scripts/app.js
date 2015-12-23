@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name yapp
- * @description
- * # yapp
- *
- * Main module of the application.
- */
  angular
- .module('yapp', [
+ .module('app', [
     'ui.router',
     'snap',
     'ngAnimate'
@@ -17,7 +9,7 @@
  .config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.when('/dashboard', '/dashboard/overview');
-    $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/home');
 
     $stateProvider
     .state('base', {
@@ -25,10 +17,10 @@
         url: '',
         templateUrl: 'views/base.html'
     })
-    .state('login', {
-      url: '/login',
+    .state('home', {
+      url: '/home',
       parent: 'base',
-      templateUrl: 'views/login.html',
+      templateUrl: 'views/home.html',
       controller: 'LoginCtrl'
   })
     .state('dashboard', {

@@ -1,22 +1,28 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <title>Versatile Metro-UI Angular Theme</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8" />
+    <title>Walking Penguins</title>
+    <meta name="description" content="Walking Penguins, make friends everywhere you go!">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.tmp) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="../bower_components/angular-snap/angular-snap.css" />
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" />
     <!-- endbower -->
+    
+    <link href="http://fonts.googleapis.com/css?family=Varela Round" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="yapp">
+  <body ng-app="app">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -46,6 +52,10 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../bower_components/jquery.easing/js/jquery.easing.min.js"></script>
+
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -59,6 +69,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
+    <script src="scripts/custom.js"></script>
     <!-- endbuild -->
   </body>
 </html>

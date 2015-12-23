@@ -2514,7 +2514,7 @@ output {
   padding-top: 7px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555555;
+  color: #585858;
 }
 .form-control {
   display: block;
@@ -2523,7 +2523,7 @@ output {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555555;
+  color: #585858;
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
@@ -3752,7 +3752,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
-  color: #555555;
+  color: #585858;
   text-align: center;
   background-color: #eeeeee;
   border: 1px solid #ccc;
@@ -3885,7 +3885,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555555;
+  color: #585858;
   background-color: #fff;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
@@ -4067,7 +4067,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-fixed-bottom .navbar-collapse {
   max-height: 340px;
 }
-@media (max-device-width: 480px) and (orientation: landscape) {
+@media (max-device-width: 320px) and (orientation: landscape) {
   .navbar-fixed-top .navbar-collapse,
   .navbar-fixed-bottom .navbar-collapse {
     max-height: 200px;
@@ -6465,6 +6465,232 @@ button.close {
   right: 0;
   bottom: 0;
   background: #585858;
+  overflow-y: auto;
+}
+.home-page {
+  display: table;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .home-page .navbar {
+    padding: 20px 0;
+    transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
+  }
+  .home-page .top-nav-collapse {
+    padding: 0;
+  }
+}
+.home-page section {
+  height: 100%;
+  text-align: center;
+}
+.home-page section.login-section,
+.home-page section.services-section {
+  background: #fff;
+}
+.home-page section.about-section,
+.home-page section.contact-section {
+  background: #eee;
+}
+.home-page h1 {
+  font-weight: 700;
+  line-height: 32px;
+  font-size: 34px;
+}
+.home-page h1 span {
+  font-size: 27px;
+}
+.home-page h1 small {
+  color: #FFFFFF;
+  opacity: 0.7;
+  padding-right: 5px;
+  font-size: 16px;
+  display: block;
+  margin-top: 8px;
+}
+.home-page .form-group {
+  padding: 8px 0;
+  margin-bottom: 0;
+}
+.home-page .form-content {
+  padding: 40px 0;
+}
+.home-page .user-avatar {
+  max-width: 230px;
+  width: 100%;
+  border: 3px solid white;
+}
+.home-page .img-container,
+.home-page .form-content {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 15px;
+}
+.home-page .img-container {
+  text-align: right;
+  width: 40%;
+  position: relative;
+}
+.home-page .form-content {
+  position: relative;
+}
+.home-page .form-content .table-form {
+  display: table;
+  width: 100%;
+}
+.home-page .form-content .table-form .form-groups,
+.home-page .form-content .table-form .button-container {
+  display: table-cell;
+  vertical-align: middle;
+}
+.home-page .form-content .table-form .button-container {
+  width: 100px;
+}
+.home-page .form-content .bottom-75 {
+  margin-bottom: 75px;
+  max-width: 400px;
+}
+.home-page .form-content .input-lg {
+  border-radius: 0;
+}
+.home-page .form-content .form-control {
+  background: #18af91;
+  border-color: #18af91;
+  box-shadow: none;
+  color: white;
+  font-weight: 600;
+}
+.home-page .form-content ::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 16px;
+  padding-top: 2px;
+}
+.home-page .form-content :-moz-placeholder {
+  /* Firefox 18- */
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 16px;
+  padding-top: 2px;
+}
+.home-page .form-content ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 16px;
+  padding-top: 2px;
+}
+.home-page .form-content :-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 16px;
+  padding-top: 2px;
+}
+.home-page .form-content .login {
+  height: 110px;
+  width: 100px;
+  border-radius: 0;
+  background: orange;
+  border-color: orange;
+  box-shadow: none;
+  margin-left: 15px;
+  color: white;
+}
+.home-page .form-content .login:focus {
+  outline: none;
+  outline-offset: none;
+}
+.home-page .remember {
+  margin-top: 8px;
+}
+.home-page .remember .checkbox1 {
+  padding-right: 5px;
+}
+.home-page .remember span.pass {
+  float: right;
+  padding-top: 2px;
+}
+.user-avatar2 {
+  width: 120px;
+  border: 2px solid white;
+  margin-bottom: 5px;
+}
+.login2 {
+  height: 38px;
+  border-radius: 0;
+  width: 46px;
+  margin-right: 12px;
+  background: orange;
+  border-color: orange;
+  box-shadow: none;
+  color: white;
+}
+.login2:focus {
+  outline: none;
+  outline-offset: none;
+}
+.login2:hover {
+  color: orange;
+  background: white;
+  border-color: white;
+}
+@media (max-width: 768px) {
+  .home-page:before {
+    content: '';
+    background-color: rgba(255, 255, 255, 0.15);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    border-right: none;
+  }
+  .home-page,
+  .img-content,
+  .form-content {
+    display: block !important;
+  }
+  .img-container .pull-right {
+    float: none !important;
+  }
+  .img-container .img-responsive {
+    display: initial;
+  }
+  .form-content .remember {
+    width: 100% !important;
+  }
+  .home-page .form-content .bottom-75 {
+    margin: 0 auto;
+  }
+  .home-page .img-container {
+    display: block;
+    width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  .home-page .form-content .table-form {
+    display: block;
+  }
+  .home-page .form-content .table-form .form-groups,
+  .home-page .form-content .table-form .button-container {
+    display: block;
+    width: 100%;
+  }
+  .home-page .form-content .table-form .form-groups .login,
+  .home-page .form-content .table-form .button-container .login {
+    width: 100%;
+    height: 46px;
+    margin: 8px 0 0 0;
+  }
+  .home-page .form-content .table-form .form-groups .login img,
+  .home-page .form-content .table-form .button-container .login img {
+    max-width: 26px;
+  }
+  .home-page .user-avatar {
+    max-width: 200px;
+  }
 }
 .login-page {
   overflow: auto;
@@ -8031,5 +8257,11 @@ to prevent collapsing during animation*/
 }
 html,
 body {
-  overflow: hidden;
+  font-family: 'Pacifico', sans-serif;
+  font-size: 15px;
+}
+p,
+input,
+textarea {
+  font-family: 'Varela Round', serif;
 }
