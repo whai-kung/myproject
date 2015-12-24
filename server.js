@@ -27,7 +27,7 @@ app.use('/todos', todoService)
 app.use('/login', loginService)
 
 app.use(feathers.static(path.join(__dirname, 'public')));
-app.use('/', feathers.static(path.join(__dirname, 'www')));
+app.use('/', feathers.static(path.join(__dirname, 'web/dist/')));
 
 //set icon
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
