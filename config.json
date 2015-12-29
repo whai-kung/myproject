@@ -1,5 +1,28 @@
 {
     "http": {
         "port": 3000
+    },
+    "database": {
+        "uri": "mongodb://localhost/walking-penguins",
+        "option": {
+            "db": { "native_parser": true },
+            "server": { "poolSize" : 3 },
+            "user": "",
+            "pass": ""
+        },
+        "security":{
+            "salt_factor": 10,
+            "max_login": 5,
+            "lock_time": 7200000
+        },
+        "dbname": "walkingpenguins"
+    },
+    "oauth": {
+        "token_expire": 3600,
+        "refreshToken": 1209600
+    },
+    "redis": {
+        "server": "172.0.0.1",
+        "port": 6379
     }
 }
