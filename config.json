@@ -1,5 +1,6 @@
 {
     "http": {
+        "server": "127.0.0.1",
         "port": 3000
     },
     "database": {
@@ -19,7 +20,12 @@
     },
     "oauth": {
         "token_expire": 3600,
-        "refreshToken": 1209600
+        "refreshToken_expire": 1209600,
+        "grantsType": ["password", "refresh_token", "client_credentials"],
+        "redirectUri": "http://localhost:3000/oauth/callback",
+        "oauth_id": "EevB9m9neFOErFOq",
+        "oauth_secret": "xWWuMaMUGrgdWzFoxxSHDeKEtSfZk234",
+        "secret": "JPGjhmPcRFjYTeF2bYZx71qnVpg6HxiCHLgx9DHNKzDaEkEZYNw89AwJlSEDgbNF"
     },
     "redis": {
         "server": "172.0.0.1",

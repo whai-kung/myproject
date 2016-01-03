@@ -4,22 +4,46 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt')
 
-/***** get config ******/
-var nconf = require('nconf');
-var commentedJsonFormat = require('nconf-strip-json-comments').format;
-nconf.argv().env();
-nconf.file({file: './config.json', format: commentedJsonFormat});
+var config = require('../app_config'),
+    custom = require('../app_custom');
+
+var userEmail = new Schema({
+    email: {
+        type: String,
+        required: true, 
+        validate: {
+            validator: function(email) {
+                var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                return emailRegex.test(email); // Assuming email has a text attribute
+            },
+            message: '{VALUE} is not an Email'
+        }
+    },
+    type: {type: String, required: true}
+});
 
 var userSchema = new Schema({
-    username: {type: String, required: true, index: { unique: true }},
-    password: {type: String, required: true, select: false},
+    username: {
+        type: String, 
+        required: true, 
+        index: { unique: true },
+        validate: {
+            validator: function(email) {
+                var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                return emailRegex.test(email); // Assuming email has a text attribute
+            },
+            message: '{VALUE} is not an Email'
+        }
+    },
+    email: [userEmail],
+    password: {type: String, select: false},
     firstname: {type: String, required: true},
     lastname: {type: String},
     gender: {type: String, required: true},
     avatar: {type: String},
     location: {type: [Number]}, // [Long, Lat]
     friends: {type: Schema.Types.ObjectId, ref: 'User'},
-    lastactivity_at: {type: Date, default: Date.now},
+    lastActivity_at: {type: Date, default: Date.now},
     loginAttempts: { type: Number, required: true, default: 0, select: false},
     lockUntil: { type: Number, select: false},
     created_at: {type: Date, default: Date.now},
@@ -36,9 +60,12 @@ userSchema.pre('save', function(callback){
     
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return callback();
+   
+    // if no password
+    if (!user.password) return callback();
     
     // generate a salt
-    bcrypt.genSalt(nconf.get('database:security:salt_factor'), function(err, salt) {
+    bcrypt.genSalt(config.get_config('database:security:salt_factor'), function(err, salt) {
         if (err) return callback(err);
 
         // hash the password along with our new salt
@@ -87,8 +114,8 @@ userSchema.methods.incLoginAttempts = function(callback) {
     // otherwise we're incrementing
     var updates = { $inc: { loginAttempts: 1 } };
     // lock the account if we've reached max attempts and it's not locked already
-    if (this.loginAttempts + 1 >= nconf.get('database:security:max_login') && !this.isLocked) {
-        updates.$set = { lockUntil: Date.now() + nconf.get('database:security:lock_time') };
+    if (this.loginAttempts + 1 >= config.get_config('database:security:max_login') && !this.isLocked) {
+        updates.$set = { lockUntil: Date.now() + config.get_config('database:security:lock_time') };
     }
     return this.update(updates, callback);
 };
@@ -99,6 +126,32 @@ userSchema.methods.toJSON = function() {
     if(obj.loginAttempts !== null) delete obj.loginAttempts;
     return obj
 }
+
+userSchema.statics.createNewUser = function(userModel, callback){
+    // check duplicate
+    var User = this;
+    User.findOne({ username: userModel.username },  function(err, user) {
+        if(user){
+            var err = new Error('This username already registed.');
+            return callback(err); 
+        }else{
+            var user = new User({
+                username: userModel.username,
+                password: userModel.password,
+                firstname: userModel.firstname || userModel.username,
+                gender: userModel.gender,
+                email: {
+                    email: userModel.username,
+                    type: "primary"
+                }
+            });
+            user.save(function(err, user, count) {
+                if(err) return callback(err);
+                callback(err, user, count);
+            }); 
+        }
+    });
+};
 
 userSchema.statics.getAuthenticated = function(username, password, callback) {
     this.findOne({ username: username },"+password +loginAttempts +lockUntil",  function(err, user) {
@@ -125,16 +178,18 @@ userSchema.statics.getAuthenticated = function(username, password, callback) {
             // check if the password was a match
             if (isMatch) {
                 // if there's no lock or failed attempts, just return the user
-                if (!user.loginAttempts && !user.lockUntil) return callback(null, user);
+                if (!user.loginAttempts && !user.lockUntil){
+                    user.lastActivity_at = Date.now();
+                    user.save();
+                    return callback(null, user);
+                }
+
                 // reset attempts and lock info
                 var updates = {
-                    $set: { loginAttempts: 0 },
+                    $set: { loginAttempts: 0, lastActivity_at: Date.now() },
                     $unset: { lockUntil: 0 }
                 };
-                return user.update(updates, function(err) {
-                    if (err) return callback(err);
-                    return callback(null, user);
-                });
+                return user.update(updates, callback(err, user));
             }
 
             // password is incorrect, so increment login attempts before responding
