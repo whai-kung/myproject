@@ -2,15 +2,15 @@ var feathers        = require('feathers');
 var bodyParser      = require('body-parser');
 var path            = require('path');
 var favicon         = require('serve-favicon');
-var mongoose        = require('mongoose');
 var methodOverride  = require('method-override');
 var cookieParser    = require('cookie-parser');
 var fs              = require("fs");
 var util            = require('util');
 var morgan          = require('morgan');
+var mongoose        = require('mongoose');
 
 var config = require('./app_config'),
-    custom = require('./app_custom');
+    utils = require('./utils');
 
 var app = feathers();
 
@@ -19,7 +19,7 @@ mongoose.connect(config.get_config('database:uri'), config.get_config('database:
 
 // config
 app.configure(feathers.rest())
-    .configure(feathers.socketio())
+    .configure(utils.socket)
     .use(bodyParser.json({ type: 'application/vnd.api+json'}))
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
@@ -33,8 +33,13 @@ fs.readdirSync(normalizedPath).forEach(function(file) {
     }
 });
 
+// angularjs
 app.use(feathers.static(path.join(__dirname, 'public')));
 app.use('/', feathers.static(path.join(__dirname, 'web/dist/')));
+
+// react
+//app.use(feathers.static(path.join(__dirname, 'web/chat/public')));
+//app.use('/', feathers.static(path.join(__dirname, 'web/chat/public')));
 
 // set icon
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
@@ -49,11 +54,10 @@ if (app.get('env') == 'production') {
 } else {
     app.use(morgan('dev'));
 }
-morgan.token('type', function(req, res){ return req.headers['content-type']; })
 
 var server = app.listen(config.get_config('http:port'), function(){
     var host = server.address().address
     var port = server.address().port
     var welcome = util.format("Feathers server listening on %s:%d in %s mode",host, port, app.settings.env);
-    custom.log.system(welcome);
+    utils.log.system(welcome);
 });

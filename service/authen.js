@@ -1,34 +1,56 @@
 "use strict";
 
 // Dependencies
-var jwt     = require('jsonwebtoken'),
-    db      = require('../models');
+var db      = require('../models');
 
 var config  = require('../app_config'),
-    custom  = require('../app_custom');
+    utils   = require('../utils');
 
 var cookieParser    = require('cookie-parser');
 
-function setCookies(req, res, model){
-    var cookie = req.cookies.penguins_auth;
-    if (cookie === undefined)
-    {
-        // no: set a new cookie
-        res.cookie('penguins_auth', {model: model}, { maxAge: 2592000, httpOnly: true });
-        custom.log.notice('cookie created successfully');
-    } else {
-        // yes, cookie was already present 
-        console.log('cookie exists', cookie);
-        for(var i in req.cookies){
-            console.log(i, "foreach cookies");
-            res.clearCookie(i);
-        };
-    } 
+function setCookies(req, res, model, secret){
+    res.cookie('penguins_auth', model, { httpOnly: true });
+    utils.log.notice('cookie created successfully');
+}
+function clearCookies(req, res){
+    for(var i in req.cookies){
+        res.clearCookie(i);
+    };
 }
 
 module.exports = { 
+    signout: function(req, res, callback) {
+        utils.log.notice('logout');
+        var Auth = db.auth;
+        var token = req.body.token || req.query.token || req.headers['penguin-access-token'];
+        var cookie = req.cookies.penguins_auth;
+        if(token) token = {token: token};
+        var model = cookie || token;
 
-    login: function(req, res, callback){
+        if(model){
+            Auth.accessToken.logout(model.token, function(err){
+                clearCookies(req, res);
+                callback(err, res.json({message: "Bye Bye!!"}));
+            });
+        }else{
+            callback({message: "You did not loging in", stack: "signout"});
+        }
+    },
+    create: function(req, res, callback) {
+        utils.log.notice('user/create', JSON.stringify(req.body));
+        var newUser = req.body;
+        if(!newUser.password) return callback({message:"password is required!!"});
+        db.user.createNewUser(newUser, function(err, user, count){
+            if(err){
+                utils.log.error('create user', err);
+                return callback({message:err.message});
+            }else{
+                utils.log.res('create user', user, count);
+                callback(err, res.json(user));
+            }
+        }); 
+    },
+    signin: function(req, res, callback){
         var User = db.user;
         var auth = db.auth;
         var request = req.body;
@@ -36,7 +58,7 @@ module.exports = {
         auth.application.findOne({oauth_id:request.app_id}, function(err, app){
             User.getAuthenticated(request.username, request.password, function(err, user, reason) {
                 if (err) { 
-                    custom.log.error('login fail', err);
+                    utils.log.error('login fail', err);
                     return res.status(400).send({message:err.message});
                 }
 
@@ -44,27 +66,27 @@ module.exports = {
                 if (user) {
                     auth.accessToken.createToken({
                         user: user,
-                        oauth_id: request.oauth_id,
+                        oauth_id: request.app_id,
                         scope: "all",
-                        remember_me: false
-                    },function(err, accessToken, count){
-                        custom.log.res('login success', user);
-                        var token = app.encrypt(accessToken.token);
-                        var refreshToken = app.encrypt(accessToken.refreshToken);
-                        setCookies(req, res, token);
-                        res.setHeader("x-access-token", token)
-                        return callback(null, res.json({
-                              success: true,
-                              message: 'Enjoy your token!',
-                              token: token,
-                              refreshToken: refreshToken,
-                              test_token: accessToken.token,
-                              test_refreshToken: accessToken.refreshToken
-                            }));
-
+                        remember_me: false,
+                        device: req.headers['user-agent'] || "default"
+                    },function(err, accessToken){
+                        utils.log.res('login success', user);
+                        app.encrypt(accessToken.token, function(err, msg){
+                            if(err) return res.status(400).send({message: err.message});
+                            var token = msg;
+                            setCookies(req, res, accessToken, app.secret);
+                            res.setHeader("penguin-access-token", token)
+                            return callback(null, res.json({
+                                  success: true,
+                                  message: 'Enjoy your token!',
+                                  token: token,
+                                  expire: accessToken.expires,
+                                  test_token: accessToken.token,
+                                }));
+                        });
                     });
                 }
-
                 // otherwise we can determine why we failed
                 var reasons = User.failedLogin;
                 switch (reason) {
@@ -87,13 +109,27 @@ module.exports = {
     },
     verifyToken: function(req, res, callback){
         var User = db.user;
-        var auth = db.auth;
-        var token = req.body.token || req.query.token || req.headers['x-access-token'];
+        var Auth = db.auth;
+        var token = req.body.token || req.query.token || req.headers['penguin-access-token'];
+        var cookie = req.cookies.penguins_auth;
+        if(token){
+            res.setHeader("penguin-access-token", token);
+            token = {token: token};
+        }
 
-        // decode token
-        if (token) {
-
-
+        var model = cookie || token;
+        console.log(model);
+        if (model) {
+            Auth.accessToken.verifyToken(model, function(err, is_correct, model){
+                if(is_correct){
+                    User.findById(model.user_id, function(err, user){
+                        if(err || !user) return callback({is_correct: false, message: "User not found!!"});
+                        return callback(err, res.json({is_correct: is_correct, model: user}));
+                    }); 
+                }else{
+                    callback({is_correct: is_correct, message: "authorize fail!!"});
+                }
+            });   
         } else {
 
             // if there is no token

@@ -1,11 +1,9 @@
 "use strict";
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt')
-
-var config = require('../app_config'),
-    custom = require('../app_custom');
+var mongoose    = require('mongoose');
+var Schema      = mongoose.Schema;
+var bcrypt      = require('bcrypt');
+var ObjectID    = mongoose.Types.ObjectId;
 
 var userEmail = new Schema({
     email: {
@@ -120,12 +118,45 @@ userSchema.methods.incLoginAttempts = function(callback) {
     return this.update(updates, callback);
 };
 
+function getEmail(emails){
+    for(var i=0 ; i< emails.length ; i ++)
+    {
+        if(emails[i].type == "primary"){
+            return emails[i].email;
+        }
+    }
+}
+
+userSchema.methods.getEmail = function() {
+    return getEmail(this.email);
+}
+
+userSchema.methods.getFriendInfo = function() {
+    return {
+        firstname: this.firstname,
+        lastname: this.lastname,
+        lastActivity_at: this.lastActivity_at,
+        email: this.getEmail(),
+        gender: this.gender,
+        avatar: this.avatar
+    };
+}
+
 userSchema.methods.toJSON = function() {
     var obj = this.toObject()
     if(obj.password) delete obj.password;
     if(obj.loginAttempts !== null) delete obj.loginAttempts;
+    delete obj.__v;
     return obj
 }
+
+userSchema.statics.findById = function(user_id, callback){
+    var User = this;
+    User.findOne({ _id: new ObjectID(user_id) }, function(err, user){
+        if(err) return callback(err);
+        callback(err, user); 
+    });
+};
 
 userSchema.statics.createNewUser = function(userModel, callback){
     // check duplicate

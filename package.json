@@ -32,6 +32,7 @@
     "morgan": "^1.6.1",
     "nconf": "^0.8.2",
     "nconf-strip-json-comments": "^0.1.0",
+    "object-encrypter": "^0.1.2",
     "serve-favicon": "^2.3.0",
     "uid2": "0.0.3",
     "ursa": "^0.9.1",

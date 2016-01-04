@@ -3,24 +3,8 @@
 var uid         = require('uid2'),
     mongoose    = require('mongoose'),
     Schema      = mongoose.Schema,
-    config      = require('../app_config'); 
-
-var crypto      = require('crypto'),
-    algorithm   = 'aes-256-ctr';
-
-function encrypt(text, oauth_secret){
-    var cipher = crypto.createCipher(algorithm, oauth_secret)
-    var crypted = cipher.update(text,'utf8','hex')
-    crypted += cipher.final('hex');
-    return crypted;
-}
- 
-function decrypt(text, oauth_secret){
-    var decipher = crypto.createDecipher(algorithm, oauth_secret)
-    var dec = decipher.update(text,'hex','utf8')
-    dec += decipher.final('utf8');
-    return dec;
-}
+    config      = require('../app_config'),
+    utils       = require('../utils');
 
 var applicationSchema = new Schema({
     title: { type: String, required: true },
@@ -45,7 +29,7 @@ var accessTokenSchema = new Schema({
             return uid(124);
         }
     },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
     oauth_id: { type: String, require: true },
     scope: [ { type: String }],
     expires: { type: Date, default: function(){
@@ -58,29 +42,35 @@ var accessTokenSchema = new Schema({
         var length = config.get_config('oauth:refreshToken_expire'); // Length (in second) of our access token
         return new Date(today.getTime() + length*1000);
     } },
-
-    remember_me: { type: Boolean, default: true }
+    remember_me: { type: Boolean, default: false },
+    device: { type: String, require: true }
 });
 
-accessTokenSchema.virtual('tokenActive').get(function() {
-    // check token still active
-    return (this.expires > Date.now());
-});
-accessTokenSchema.virtual('refreshTokenActive').get(function() {
-    // check token still active
-    return (this.refreshExpires > Date.now());
-});
 accessTokenSchema.virtual('id').get(function(){
     return this._id.toHexString();
 });
 
 // local method
-applicationSchema.methods.encrypt = function(text) {
-    return encrypt(text, this.oauth_secret); 
+accessTokenSchema.methods.tokenActive = function(){
+    // check token still active
+    return (this.expires > Date.now());
+};
+
+accessTokenSchema.methods.refreshTokenActive = function(){
+    // check refresh token still active
+    return (this.refreshExpires > Date.now());
+};
+
+applicationSchema.methods.encrypt = function(text, callback) {
+    utils.security.secret.encrypt(text, this.oauth_secret, function(err, msg){
+        return callback(err, msg); 
+    }); 
 };
 
 applicationSchema.methods.decrypt = function(text, callback) {
-    return decrypt(text, this.oauth_secret); 
+    utils.security.secret.decrypt(text, this.oauth_secret, function(err, msg){
+        return callback(err, msg); 
+    }); 
 };
 
 // static method
@@ -98,34 +88,87 @@ applicationSchema.statics.createApplication = function(model, callback){
     }); 
 };
 
+function updateToken(is_native, model, update){
+    var today = new Date();
+    var length = config.get_config('oauth:token_expire');
+    var refresh_length = config.get_config('oauth:refreshToken_expire');
+    if(is_native){
+        update.refreshExpires = new Date(today.getTime() + (refresh_length*1000))
+    }else{
+        update.scope = model.scope,
+        update.token = uid(124),
+        update.refreshToken = uid(124),
+        update.expires = new Date(today.getTime() + (length*1000)),
+        update.refreshExpires = new Date(today.getTime() + (refresh_length*1000))
+    }
+}
+accessTokenSchema.statics.logout = function(token, callback){
+    var accessTokenModel = this;
+    accessTokenModel.remove({ $or: [{'token':token}, {'refreshToken':token}] }, function(err){
+        callback();
+    });
+};
+
 accessTokenSchema.statics.createToken = function(model, callback){
     var accessTokenModel = this;
-    var accessToken = new accessTokenModel({
-        user: model.user._id,
-        oauth_id: model.oauth_id,
-        scope: model.scope,
-        remember_me: model.remember_me
-    }); 
-    accessToken.save(function(err, accessToken, count) {
-        if(err) return callback(err);
-        callback(err, accessToken, count);
-    }); 
+    var is_native = (model.oauth_id == config.get_config('oauth:oauth_id')); 
+    
+    accessTokenModel.findOne(
+        { 
+            user_id: model.user._id,
+            oauth_id: model.oauth_id,
+            device: model.device
+        },
+        function(err, accessToken){
+            if(err) return callback(err);
+            if(accessToken){
+                updateToken(is_native, model, accessToken); 
+            }else{
+                 accessToken = new accessTokenModel({
+                    user_id     : model.user._id,
+                    oauth_id    : model.oauth_id,
+                    scope       : model.scope,
+                    device      : model.device
+                });
+            }
+            accessToken.save(function(err, token, count){
+                if(err) return callback(err);
+                if(is_native){
+                    return callback(err, {
+                        token: accessToken.refreshToken,
+                        expires: accessToken.refreshExpires
+                    });
+                }
+                callback(err, {
+                    token: accessToken.token,
+                    expires: accessToken.expires
+                });    
+            });
+        }
+    );
 };
 
 accessTokenSchema.statics.verifyToken = function(model, callback){
     var accessTokenModel = this;
-    accessTokenModel.findOne({token: model.token}, function(err, accessToken){
+    var condition = [];
+    if(model.expires){
+        condition = [{'refreshToken': model.token}]; 
+    }else{
+        condition = [{'token':model.token}, {'refreshToken':model.token}]; 
+    }
+    accessTokenModel.findOne({ $or: condition }, function(err, accessToken){
         if(err) return callback(err);
-        if(accessToken.tokenActive || accessToken.remember_me) return callback(null, true, accessTokenModel);
-        if(accessToken.refreshTokenActive){
+        if(!accessToken) return callback(null, false);
+        if(accessToken.tokenActive()) return callback(null, true, accessToken);
+        if(accessToken.refreshTokenActive() || accessToken.remember_me){
             var today = new Date();
             var length = config.get_config('oauth:token_expire');
             var refresh_length = config.get_config('oauth:refreshToken_expire');  
             accessToken.expires = new Date(today.getTime() + length*1000);
             accessToken.refreshExpires = new Date(today.getTime() + refresh_length*1000);
-            accessToken.save(function(err){
-                custom.log.notice("refresh token expire's time");
-                return callback(null, true, accessToken);
+            accessToken.save(function(err, resultModel){
+                utils.log.notice("refresh token expire's time");
+                return callback(null, true, resultModel);
             });
         }
         callback(null, false);

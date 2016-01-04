@@ -1,55 +1,56 @@
 "use strict";
 
-// Dependencies
-var db            = require('../models');
-var custom          = require('../app_custom');
+var db          = require('../models');
+var utils       = require('../utils');
 
 module.exports = {
-    create: function(request, response, callback) {
-        custom.log.notice('user/create', JSON.stringify(request.body));
-        var newUser = request.body;
-        if(!newUser.password) return response.status(400).send({message:"password is required!!"});
-        db.user.createNewUser(newUser, function(err, user, count){
-            if(err){
-                custom.log.error('create user', err);
-                return response.status(400).send({message:err.message});
-            }else{
-                custom.log.res('create user', user, count);
-                callback(err, response.json(user));
-            }
-        }); 
+
+    getUser: function(req, res, callback) {
+        var User = db.user;
+        var user_id = req.params.id || req.headers.user._id;
+        try{
+            User.findById(user_id, function(err, user){
+                var currentUser = req.headers.user;
+                if(currentUser._id == String(user._id)){
+                    return callback(null, res.json(user));
+                }else{
+                    return callback(err, res.json(user.getFriendInfo()));  
+                }
+            }); 
+        }catch(e){
+            callback({message: e.message});
+        }
     },
-    getUser: function() {},
-    authen: function(request, response, callback) {
-        custom.log.notice('user/authen', JSON.stringify(request.body));
-        var candidateUser = request.body;
+    authen: function(req, res, callback) {
+        utils.log.notice('user/authen', JSON.stringify(req.body));
+        var candidateUser = req.body;
         db.user.getAuthenticated(candidateUser.username, candidateUser.password, function(err, user, reason) {
             if (err) { 
-                custom.log.error('login fail', err);
-                return response.status(400).send({message:err.message});
+                utils.log.error('login fail', err);
+                return callback({message:err.message});
             }
 
             // login was successful if we have a user
             if (user) {
-                custom.log.res('login success', user);
-                callback(err, response.json(user));
+                utils.log.res('login success', user);
+                callback(err, res.json(user));
             }
 
             // otherwise we can determine why we failed
             var reasons = db.user.failedLogin;
             switch (reason) {
                 case reasons.NOT_FOUND:
-                    return response.status(400).send({message:'Username or Password incorrect!!'});
+                    return callback({message:'Username or Password incorrect!!'});
                     break;
                 case reasons.PASSWORD_INCORRECT:
                     // note: these cases are usually treated the same - don't tell
                     // the user *why* the login failed, only that it did
-                    return response.status(400).send({message:'Username or Password incorrect!!'});
+                    return callback({message:'Username or Password incorrect!!'});
                     break;
                 case reasons.MAX_ATTEMPTS:
                     // send email or otherwise notify user that account is
                     // temporarily locked
-                    return response.status(400).send({message:'Your account was lock, please contact  admin'});
+                    return callback({message:'Your account was lock, please contact  admin'});
                     break;
             }
         });

@@ -19,12 +19,12 @@
         "dbname": "walkingpenguins"
     },
     "oauth": {
-        "token_expire": 3600,
+        "token_expire": 1800,
         "refreshToken_expire": 1209600,
         "grantsType": ["password", "refresh_token", "client_credentials"],
         "redirectUri": "http://localhost:3000/oauth/callback",
-        "oauth_id": "EevB9m9neFOErFOq",
-        "oauth_secret": "xWWuMaMUGrgdWzFoxxSHDeKEtSfZk234",
+        "oauth_id": "nvqDKTZBmwImI4Mw",
+        "oauth_secret": "B4B7lEvlAMz6TFlhzSOr7ftpf7EjRK82",
         "secret": "JPGjhmPcRFjYTeF2bYZx71qnVpg6HxiCHLgx9DHNKzDaEkEZYNw89AwJlSEDgbNF"
     },
     "redis": {

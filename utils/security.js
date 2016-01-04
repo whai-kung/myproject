@@ -1,37 +1,52 @@
 "use strict";
 
-var clc = require('cli-color');
 var ursa    = require('ursa');
 var fs      = require("fs");
-
-var log_type = {
-    system: function(arg1, arg2, arg3, arg4, arg5) {
-        console.log(clc.white(arg1, arg2, arg3, arg4, arg5)); 
-    },
-    warn: function(arg1, arg2, arg3, arg4, arg5) {
-        console.log(clc.yellow(arg1, arg2, arg3, arg4, arg5)); 
-    },
-    notice: function(arg1, arg2, arg3, arg4, arg5) {
-        console.log(clc.cyan(arg1, arg2, arg3, arg4, arg5)); 
-    },
-    error: function(arg1, arg2, arg3, arg4, arg5) {
-        console.log(clc.red.bold(arg1, arg2, arg3, arg4, arg5)); 
-    },
-    res: function(arg1, arg2, arg3, arg4, arg5) {
-        console.log(clc.green(arg1, arg2, arg3, arg4, arg5)); 
-    },
-    req: function(arg1, arg2, arg3, arg4, arg5) {
-        console.log(clc.magenta(arg1, arg2, arg3, arg4, arg5)); 
-    }
-}
 
 // public and private key to login
 var priKey = ursa.createPrivateKey(fs.readFileSync('./certs/private.key.pem'));
 var pubKey = ursa.createPublicKey(fs.readFileSync('./certs/public.key.pem'));
 
+var crypto      = require('crypto'),
+    algorithm   = 'aes-256-ctr';
+
+function encrypt(text, oauth_secret){
+    var cipher = crypto.createCipher(algorithm, oauth_secret)
+    var crypted = cipher.update(text,'utf8','hex')
+    crypted += cipher.final('hex');
+    return crypted;
+}
+ 
+function decrypt(text, oauth_secret){
+    var decipher = crypto.createDecipher(algorithm, oauth_secret)
+    var dec = decipher.update(text,'hex','utf8')
+    dec += decipher.final('utf8');
+    return dec;
+}
+
 var security = {
+    secret: {
+        encrypt: function(msg, secret, callback){
+            try{
+                return callback(null, encrypt(msg, secret)); 
+            }catch(e){
+                callback(e);
+            }
+        },
+        decrypt: function(msg, secret, callback){
+            try{
+                return callback(null, decrypt(msg, secret)); 
+            }catch(e){
+                callback(e);
+            }
+        }
+    },        
     encrypt: function(msg, callback){
-        return callback(null, priKey.privateEncrypt(msg, 'utf8', 'base64')); 
+        try{
+            return callback(null, priKey.privateEncrypt(msg, 'utf8', 'base64')); 
+        }catch(e){
+            callback(e);
+        }
     }, 
     decrypt: function(msg, callback){
         try{
@@ -41,7 +56,12 @@ var security = {
         } 
     },
     client_encrypt: function(msg, callback){
-        return callback(null, pubKey.encrypt(msg, 'utf8', 'base64')); 
+        try{
+            var engine = encrypter(secret);
+            return callback(null, pubKey.encrypt(msg, 'utf8', 'base64')); 
+        }catch(e){
+            return callback(e); 
+        }
     }, 
     client_decrypt: function(msg, callback){
         try{
@@ -86,5 +106,4 @@ config.security.client_encrypt("username", function(err, msg){
 */
 
 
-module.exports.security = security; 
-module.exports.log = log_type; 
+module.exports = security; 
