@@ -7,6 +7,11 @@ module.exports = function(app) {
 
     app.use('/auth', controller.authen);
     app.use('/me', controller.me);
+    
+    // setup client
+    app.use('/api/init', controller.init);
+
+    // api require authentication
     app.use('/api/user', utils.authen.isAuthenticated, controller.user);
     
     app.use(utils.errors.logErrors);

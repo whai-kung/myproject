@@ -1,13 +1,14 @@
 "use strict";
 
-var db          = require('../models');
+var db          = require('../models'),
+    config      = require('../app_config');
 
 var isAuthenticated = function isAuthenticated(req, res, next) {
     var Auth = db.auth;
     var User = db.user;
     // do any checks you want to in here
 
-    var cookie = req.cookies.penguins_auth;
+    var cookie = req.cookies[config.get_config('oauth:cookie')];
     if(cookie){
         Auth.accessToken.verifyToken(cookie, function(err, is_correct, model){
             if(is_correct){

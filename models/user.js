@@ -1,9 +1,11 @@
 "use strict";
 
-var mongoose    = require('mongoose');
-var Schema      = mongoose.Schema;
-var bcrypt      = require('bcrypt');
-var ObjectID    = mongoose.Types.ObjectId;
+var mongoose    = require('mongoose'),
+    bcrypt      = require('bcrypt'),
+    config      = require('../app_config');
+
+var Schema      = mongoose.Schema,
+    ObjectID    = mongoose.Types.ObjectId;
 
 var userEmail = new Schema({
     email: {

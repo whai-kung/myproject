@@ -9,7 +9,7 @@ var config  = require('../app_config'),
 var cookieParser    = require('cookie-parser');
 
 function setCookies(req, res, model, secret){
-    res.cookie('penguins_auth', model, { httpOnly: true });
+    res.cookie(config.get_config('oauth:cookie'), model, { httpOnly: true });
     utils.log.notice('cookie created successfully');
 }
 function clearCookies(req, res){
@@ -22,8 +22,8 @@ module.exports = {
     signout: function(req, res, callback) {
         utils.log.notice('logout');
         var Auth = db.auth;
-        var token = req.body.token || req.query.token || req.headers['penguin-access-token'];
-        var cookie = req.cookies.penguins_auth;
+        var token = req.body.token || req.query.token || req.headers[config.get_config('oauth:header')];
+        var cookie = req.cookies[config.get_config('oauth:cookie')];
         if(token) token = {token: token};
         var model = cookie || token;
 
@@ -76,7 +76,7 @@ module.exports = {
                             if(err) return res.status(400).send({message: err.message});
                             var token = msg;
                             setCookies(req, res, accessToken, app.secret);
-                            res.setHeader("penguin-access-token", token)
+                            res.setHeader(config.get_config('oauth:header'), token)
                             return callback(null, res.json({
                                   success: true,
                                   message: 'Enjoy your token!',
@@ -110,10 +110,10 @@ module.exports = {
     verifyToken: function(req, res, callback){
         var User = db.user;
         var Auth = db.auth;
-        var token = req.body.token || req.query.token || req.headers['penguin-access-token'];
-        var cookie = req.cookies.penguins_auth;
+        var token = req.body.token || req.query.token || req.headers[config.get_config('oauth:header')];
+        var cookie = req.cookies[config.get_config('oauth:cookie')];
         if(token){
-            res.setHeader("penguin-access-token", token);
+            res.setHeader(config.get_config('oauth:header'), token);
             token = {token: token};
         }
 

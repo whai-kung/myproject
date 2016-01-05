@@ -25,7 +25,9 @@
         "redirectUri": "http://localhost:3000/oauth/callback",
         "oauth_id": "nvqDKTZBmwImI4Mw",
         "oauth_secret": "B4B7lEvlAMz6TFlhzSOr7ftpf7EjRK82",
-        "secret": "JPGjhmPcRFjYTeF2bYZx71qnVpg6HxiCHLgx9DHNKzDaEkEZYNw89AwJlSEDgbNF"
+        "secret": "JPGjhmPcRFjYTeF2bYZx71qnVpg6HxiCHLgx9DHNKzDaEkEZYNw89AwJlSEDgbNF",
+        "header": "penguin_access_token",
+        "cookie": "penguins_auth"
     },
     "redis": {
         "server": "172.0.0.1",

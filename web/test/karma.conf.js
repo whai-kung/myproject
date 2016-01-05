@@ -24,6 +24,9 @@ module.exports = function(config) {
       '../bower_components/angular-snap/angular-snap.js',
       '../bower_components/jquery-ui/jquery-ui.js',
       '../bower_components/jquery.easing/js/jquery.easing.js',
+      '../bower_components/angular-busy/dist/angular-busy.js',
+      '../bower_components/angular-cookies/angular-cookies.js',
+      '../bower_components/angular-resource/angular-resource.js',
       // endbower
       '../app/scripts/**/*.js',
       //'../test/mock/**/*.js',

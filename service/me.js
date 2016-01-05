@@ -1,10 +1,12 @@
 "use strict";
 
+var config      = require('../app_config');
+
 module.exports = {
     info: function(req, res, callback){
         var User = db.user;
         var user_id = req.params.id || req.headers.user._id;
-        var cookie = req.cookies.penguins_auth;
+        var cookie = req.cookies[config.get_config('oauth:cookie')];
         try{
             User.findById(user_id, function(err, user){
                 var currentUser = req.headers.user;

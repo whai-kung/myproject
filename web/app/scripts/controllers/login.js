@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('app')
-  .controller('LoginCtrl', function($scope, $location) {
+    .controller('loginController', function($scope, $location, Default) {
 
-    $scope.submit = function() {
+        Default.init({},{}, function(data){alert(data);});
+        $scope.submit = function() {
+            $location.path('/dashboard');
+            return false;
+        }
 
-      $location.path('/dashboard');
-
-      return false;
-    }
-
-  });
+    });
