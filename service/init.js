@@ -1,13 +1,13 @@
 "use strict";
 
-var config      = require('../app_config');
+var config      = require('../config').config;
 var init = {
     oauth   : {
-        app_id  : config.get_config('oauth:oauth_id')
+        app_id  : config.oauth.oauth_id
     },
     common  : {
-        header  : config.get_config('oauth:header'),
-        cookie  : config.get_config('oauth:cookie')
+        header  : config.oauth.header,
+        cookie  : config.oauth.cookie
     },
 }
 

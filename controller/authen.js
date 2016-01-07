@@ -7,7 +7,7 @@ var service = require('../service');
 var router = feathers.Router();
 
 router.get('/verify', service.authen.verifyToken)
-router.post('/authorize', service.authen.signin)
+router.post('/signin', service.authen.signin)
 router.post('/signup', service.authen.create);
 router.get('/signout', service.authen.signout);
 

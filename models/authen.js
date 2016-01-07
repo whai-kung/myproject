@@ -3,7 +3,7 @@
 var uid         = require('uid2'),
     mongoose    = require('mongoose'),
     Schema      = mongoose.Schema,
-    config      = require('../app_config'),
+    config      = require('../config').config,
     utils       = require('../utils');
 
 var applicationSchema = new Schema({
@@ -34,12 +34,12 @@ var accessTokenSchema = new Schema({
     scope: [ { type: String }],
     expires: { type: Date, default: function(){
         var today = new Date();
-        var length = config.get_config('oauth:token_expire'); // Length (in second) of our access token
+        var length = config.oauth.token_expire; // Length (in second) of our access token
         return new Date(today.getTime() + length*1000);
     } },
     refreshExpires: { type: Date, default: function(){
         var today = new Date();
-        var length = config.get_config('oauth:refreshToken_expire'); // Length (in second) of our access token
+        var length = config.oauth.refreshToken_expire; // Length (in second) of our access token
         return new Date(today.getTime() + length*1000);
     } },
     remember_me: { type: Boolean, default: false },
@@ -90,8 +90,8 @@ applicationSchema.statics.createApplication = function(model, callback){
 
 function updateToken(is_native, model, update){
     var today = new Date();
-    var length = config.get_config('oauth:token_expire');
-    var refresh_length = config.get_config('oauth:refreshToken_expire');
+    var length = config.oauth.token_expire;
+    var refresh_length = config.oauth.refreshToken_expire;
     if(is_native){
         update.refreshExpires = new Date(today.getTime() + (refresh_length*1000))
     }else{
@@ -111,7 +111,7 @@ accessTokenSchema.statics.logout = function(token, callback){
 
 accessTokenSchema.statics.createToken = function(model, callback){
     var accessTokenModel = this;
-    var is_native = (model.oauth_id == config.get_config('oauth:oauth_id')); 
+    var is_native = (model.oauth_id == config.oauth.oauth_id); 
     
     accessTokenModel.findOne(
         { 
@@ -162,8 +162,8 @@ accessTokenSchema.statics.verifyToken = function(model, callback){
         if(accessToken.tokenActive()) return callback(null, true, accessToken);
         if(accessToken.refreshTokenActive() || accessToken.remember_me){
             var today = new Date();
-            var length = config.get_config('oauth:token_expire');
-            var refresh_length = config.get_config('oauth:refreshToken_expire');  
+            var length = config.oauth.token_expire;
+            var refresh_length = config.oauth.refreshToken_expire;  
             accessToken.expires = new Date(today.getTime() + length*1000);
             accessToken.refreshExpires = new Date(today.getTime() + refresh_length*1000);
             accessToken.save(function(err, resultModel){

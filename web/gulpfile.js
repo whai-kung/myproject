@@ -1,6 +1,12 @@
 /* jshint node:true */
 'use strict';
 
+// react
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var reactify = require('reactify');
+
+// default
 var gulp = require('gulp');
 var karma = require('karma').server;
 var argv = require('yargs').argv;
@@ -25,6 +31,15 @@ gulp.task('jshint', function() {
 //   return gulp.src('app/scripts/**/*.js')
 //     .pipe($.jscs());
 // });
+
+gulp.task('browserify', function(){
+  var b = browserify();
+  b.transform(reactify); // use the reactify transform
+  b.add('app/scripts/react.jsx');
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(gulp.dest('app/react'));
+});
 
 gulp.task('html', ['styles'], function() {
   var lazypipe = require('lazypipe');
@@ -88,15 +103,15 @@ gulp.task('connect', ['styles'], function() {
     .use(serveIndex('app'));
 
   require('http').createServer(app)
-    .listen(3000)
+    .listen(8080)
     .on('listening', function() {
-      console.log('Started connect web server on http://localhost:3000');
+      console.log('Started connect web server on http://localhost:8080');
     });
 });
 
 gulp.task('serve', ['wiredep', 'connect', 'fonts', 'watch'], function() {
   if (argv.open) {
-    require('opn')('http://localhost:3000');
+    require('opn')('http://localhost:8080');
   }
 });
 
@@ -143,6 +158,7 @@ gulp.task('watch', ['connect'], function() {
 
   gulp.watch('app/styles/**/*.less', ['styles']);
   gulp.watch('bower.json', ['wiredep']);
+  gulp.watch('app/scripts/*.jsx', ['browserify']);
 });
 
 gulp.task('builddist', ['jshint', 'html', 'images', 'fonts', 'extras'],

@@ -2,7 +2,7 @@
 
 var mongoose    = require('mongoose'),
     bcrypt      = require('bcrypt'),
-    config      = require('../app_config');
+    config      = require('../config').config;
 
 var Schema      = mongoose.Schema,
     ObjectID    = mongoose.Types.ObjectId;
@@ -65,7 +65,7 @@ userSchema.pre('save', function(callback){
     if (!user.password) return callback();
     
     // generate a salt
-    bcrypt.genSalt(config.get_config('database:security:salt_factor'), function(err, salt) {
+    bcrypt.genSalt(config.database.security.salt_factor, function(err, salt) {
         if (err) return callback(err);
 
         // hash the password along with our new salt
@@ -114,8 +114,8 @@ userSchema.methods.incLoginAttempts = function(callback) {
     // otherwise we're incrementing
     var updates = { $inc: { loginAttempts: 1 } };
     // lock the account if we've reached max attempts and it's not locked already
-    if (this.loginAttempts + 1 >= config.get_config('database:security:max_login') && !this.isLocked) {
-        updates.$set = { lockUntil: Date.now() + config.get_config('database:security:lock_time') };
+    if (this.loginAttempts + 1 >= config.database.security.max_login && !this.isLocked) {
+        updates.$set = { lockUntil: Date.now() + config.database.security.lock_time };
     }
     return this.update(updates, callback);
 };

@@ -1,8 +1,7 @@
 "use strict";
 
 var moment  = require('moment');
-var config  = require('../app_config'),
-    utils   = require('../utils'),
+var utils   = require('../utils'),
     db      = require('../models');
 
 module.exports = function(app){ 

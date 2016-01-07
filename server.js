@@ -9,13 +9,13 @@ var util            = require('util');
 var morgan          = require('morgan');
 var mongoose        = require('mongoose');
 
-var config = require('./app_config'),
+var config = require('./config').config,
     utils = require('./utils');
 
 var app = feathers();
 
 // Connect to database
-mongoose.connect(config.get_config('database:uri'), config.get_config('database:option'));
+mongoose.connect(config.database.uri, config.database.optiong);
 
 // config
 app.configure(feathers.rest())
@@ -24,8 +24,9 @@ app.configure(feathers.rest())
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
     .use(methodOverride())
-    .use(cookieParser("private_key"));
-
+    .use(cookieParser(config.oauth.secret))
+    .use(utils.authen.cros());
+    
 var normalizedPath = path.join(__dirname, "setting");
 fs.readdirSync(normalizedPath).forEach(function(file) {
     if (file.match(/\.js$/) !== null) {   
@@ -45,7 +46,9 @@ app.use('/', feathers.static(path.join(__dirname, 'web/dist/')));
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 // router
+app.use(utils.authen.cros());
 require('./route')(app);
+
 
 // log
 var accessLogStream = fs.createWriteStream(__dirname + '/access.log',{flags: 'a'});
@@ -55,7 +58,7 @@ if (app.get('env') == 'production') {
     app.use(morgan('dev'));
 }
 
-var server = app.listen(config.get_config('http:port'), function(){
+var server = app.listen(config.http.port, function(){
     var host = server.address().address
     var port = server.address().port
     var welcome = util.format("Feathers server listening on %s:%d in %s mode",host, port, app.settings.env);

@@ -1,7 +1,7 @@
 var
     // Set hosts so we can detect local, staging, production.
     hosts = {
-        'localhost:3000'                : 'local',
+        'localhost:8080'                : 'local',
         'staging.walkingpenguins.com'   : 'staging',
         'walkingpenguins.com'           : 'production',
         'walkingpenguins.com'           : 'roadhouse'
