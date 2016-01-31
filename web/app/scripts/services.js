@@ -18,7 +18,6 @@ appServices.factory('Default', ['$resource', function($resource) {
 // Login.
 appServices.factory('Login', ['$resource', function ($resource) {
     'use strict';
-    var a = {a:1,b:2,c:3}
     return $resource(
         app_server + '/auth/signin',
         {},
@@ -32,6 +31,21 @@ appServices.factory('Login', ['$resource', function ($resource) {
                 transformRequest: function(data){
                     return $.param(data);
                 }
+            }
+        }
+    );
+}]);
+
+// Verify Token.
+appServices.factory('Verify', ['$resource', function ($resource) {
+    'use strict';
+    return $resource(
+        app_server + '/auth/verify',
+        {},
+        {
+            verify: {
+                method  : 'GET',
+                isArray : false,
             }
         }
     );
@@ -52,4 +66,24 @@ appServices.factory('Logout', ['$resource', function ($resource) {
     );
 }]);
 
-
+// User
+appServices.factory('User', ['$resource', function ($resource) {
+    'use strict';
+    return $resource(
+        app_server + '/api/user/:user_id',
+        {id: '@user_id'},
+        {
+            get: {
+                method  : 'GET',
+                isArray : false,
+                transformRequest: function(data){
+                    return $.param(data);
+                }
+            },
+            update: {
+                method  : 'PUT',
+                isArray : false,
+            }        
+        }
+    );
+}]);

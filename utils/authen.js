@@ -25,14 +25,16 @@ var isAuthenticated = function isAuthenticated(req, res, next) {
         });
     }else{
         // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-        res.redirect('/');
+        res.status(401).send({ error: 'Unauthorized: Access is denied!!', redirect: '/' });
     }
 };
 
 var crossDomain = function(){
     return function(req, res, next){
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        res.setHeader("Access-Control-Allow-Origin", req.headers.origin || '*');
+        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept");
+        res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
         next();
     };
 }

@@ -1,7 +1,9 @@
 var
     // Set hosts so we can detect local, staging, production.
+    brand = "Walking Penguins",
     hosts = {
         'localhost:8080'                : 'local',
+        'localhost:3000'                : 'local',
         'staging.walkingpenguins.com'   : 'staging',
         'walkingpenguins.com'           : 'production',
         'walkingpenguins.com'           : 'roadhouse'

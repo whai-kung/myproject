@@ -1,0 +1,32 @@
+<div class="ui-base">
+    <div snap-drawer="right">
+        <div class="snap-menu">
+			<div class="sidebar-header text-center">
+                <img src="{{user.avater || 'images/flat-avatar.png'}}" alt="" class="sidebar-img img-circle">
+			</div>
+			<ul class="snap-ul">
+				<li ng-class=""><a ui-sref="overview">HOME</a></li>
+				<li ng-class=""><a ui-sref="reports">REPORTS</a></li>
+				<li><a ng-click="logout()">LOGOUT</a></li>
+				<li><a href="http://strapui.com">MORE PREMIUM THEMES</a></li>
+			</ul>
+            <div map-lazy-load="https://maps.google.com/maps/api/js" class="profile-map" ng-controller="mapController">
+                <map zoom="15">
+                    <marker visible="true" centered="true" position="current-location" ng-model=position title="You are Here" draggable="true"></marker>
+                </map>
+            </div>
+		</div>
+    </div>
+
+    <div snap-content snap-opt-disable="'left'" snap-opt-tap-to-close="false">
+        <div class="snap-toggle">
+            <a snap-toggle="right" snap-unsafe="true" ng-click="menuOpen =! menuOpen" >
+                <span class="menutoggle">
+                    <i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+                    <i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+                </span>
+            </a>       
+        </div>
+        <div ui-view ></div>
+	</div>	
+</div>

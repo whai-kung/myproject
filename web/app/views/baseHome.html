@@ -1,0 +1,24 @@
+<div class="nav">
+    <div class="navbar-header">
+        <div class="brand"><a href="#" class="brand">{{Brand}}</a></div>
+    </div>
+    <form class="navbar-form navbar-right hidden-phone" role="login" ng-submit="submit()" ng-controller="loginController">
+        <div class="form-group">
+            <div class="column">
+                <input type="text" ng-model="user.username" class="form-control" placeholder="Email" require>
+                <span class="line2"><input id="Option" type="checkbox" class=""> Remember me</span>
+            </div>
+            <div class="column">
+                <input type="password" ng-model="user.password" class="form-control" placeholder="Password" require>
+                <span class="line2">Forgot password?</span>
+            </div>
+            <button class="btn btn-primary" type="submit">     
+                Login
+            </button>
+        </div>
+    </form>
+</div>
+            
+<div class="ui-base nav-space">
+	<div ui-view />
+</div>

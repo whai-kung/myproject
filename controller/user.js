@@ -7,8 +7,8 @@ var service = require('../service');
 var router = feathers.Router();
 
 //authen by system
-router.post('/signin', service.user.authen);
+router.post('/verify', service.user.verify);
+router.put('/:id', service.user.updateUser);
 router.get('/:id', service.user.getUser);
-router.get('/', service.user.getUser);
 
 module.exports = router;

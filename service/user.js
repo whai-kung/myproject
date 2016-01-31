@@ -4,7 +4,7 @@ var db          = require('../models');
 var utils       = require('../utils');
 
 module.exports = {
-
+    
     getUser: function(req, res, callback) {
         var User = db.user;
         var user_id = req.params.id || req.headers.user._id;
@@ -21,8 +21,29 @@ module.exports = {
             callback({message: e.message});
         }
     },
-    authen: function(req, res, callback) {
-        utils.log.notice('user/authen', JSON.stringify(req.body));
+    updateUser: function(req, res, callback) {
+        var User = db.user;
+        var user_id = req.headers.user._id;
+        try{
+            User.findOneAndUpdate(
+                { "_id": user_id },
+                { 
+                    "$set": req.body
+                },
+                function(err, doc) {
+                    if(err){
+                        return callback(err);  
+                    }else{
+                        return callback(null, res.json(doc)); 
+                    }
+                }
+            );
+        }catch(e){
+            callback({message: e.message});
+        }
+    },
+    verify: function(req, res, callback) {
+        utils.log.notice('user/verify', JSON.stringify(req.body));
         var candidateUser = req.body;
         db.user.getAuthenticated(candidateUser.username, candidateUser.password, function(err, user, reason) {
             if (err) { 

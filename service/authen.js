@@ -125,10 +125,10 @@ module.exports = {
                 if(is_correct){
                     User.findById(model.user_id, function(err, user){
                         if(err || !user) return callback({is_correct: false, message: "User not found!!", code:400});
-                        return callback(err, res.json({is_correct: is_correct, model: user}));
+                        return callback(err, res.json({is_correct: is_correct, data: user, token: model.token}));
                     }); 
                 }else{
-                    callback({is_correct: is_correct, message: "authorize fail!!", code:400});
+                    return callback({is_correct: is_correct, message: "authorize fail!!", code:400});
                 }
             });   
         } else {

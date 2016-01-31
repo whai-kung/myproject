@@ -4,9 +4,8 @@
 // Font
 @import url("http://fonts.googleapis.com/css?family=Pacifico");
 @import url("http://fonts.googleapis.com/css?family=Varela Round");
-@import url("https://fonts.googleapis.com/css?family=Sorts+Mill+Goudy");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 @import url("http://fonts.googleapis.com/css?family=Rancho&effect=fire-animation");
-
 // Bootstrap
 @import "less/bootstrap.less";
 // Base
@@ -15,7 +14,7 @@
 // Pages
 @import "pages/home.less";
 @import "pages/login.less";
-@import "pages/dashboard.less";
+//@import "pages/dashboard.less";
 
 // Widgets and Effects
 @import "widgets/input-underline.less";
@@ -32,3 +31,82 @@
   padding: 0.2em 0;
 }
 
+// Snap
+div[snap-drawer] {
+    background: darken(@brand-primary, 6%);
+    a {
+        color: white;
+        &:hover,&:active,&:focus {
+            color: white;
+        }
+    }
+    .sidebar-header {
+        margin-top: 20px;
+        .sidebar-img {
+            width: 140px;
+            border: 3px solid white;
+        }
+    }
+    ul.snap-ul {
+        list-style-type: none;
+        padding-left: 0px;
+        margin-top: 20px;
+        li.active {
+             background: @brand-primary;
+        }
+        li {
+            height: 38px;
+            padding: 11px;
+            padding-left: 28px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 1px;
+            &:hover {
+                background: @brand-primary;
+            }
+            a {
+                display: block;
+                height: 35px;
+                &:hover {
+                    text-decoration: none;
+
+                }
+            }
+        }
+    }
+}
+div[snap-content] {
+    background: @gray-base;
+    a {
+        color: white;
+        &:hover,&:active,&:focus {
+            color: white;
+        }
+    }
+    .menutoggle {
+        .fa {
+            position: absolute;
+            left: 15px;
+            top: 25px;
+        }
+    }
+    .snap-toggle {
+        right: 55px; 
+        top: -10px;
+    }
+}
+
+* {
+    a, a:hover, a:active, a:visited {
+        text-decoration:none!important;
+    }
+}
+
+.snap-toggle {
+    z-index: 5000;
+    position: absolute;
+}
+
+.profile-map {
+    padding: 10px 10px 0px 10px;
+}

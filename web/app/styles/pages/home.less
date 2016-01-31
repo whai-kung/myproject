@@ -1,3 +1,64 @@
+.nav {
+    background-color: @gray-lightest;
+    padding:2px;
+    /* screen-m : 768px */
+    @media (max-width: @screen-m) {
+        .form-group {
+            display:none; 
+        }
+    }
+    
+    @media (min-width: @screen-m) {
+        .btn {
+            padding: 2px 20px;
+            margin-left: 5px;
+            font-size: 1.3em;
+        }
+        .form-group {
+            width: 100%;
+            .column {
+                width:180px; 
+                font-size: 10px;
+                display: inline-table;
+                input[type='text'], input[type='password'] {
+                    width: 180px;
+                }
+                .line2 {
+                    line-height: 12px;     
+                    vertical-align: middle;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+.brand {
+    font-weight: bold;
+    text-shadow: 4px 4px 4px @gray-lighter;
+    font-family: 'Varela Round', sans-serif;
+    padding: 5px;
+    @media (max-width: @screen-m) {
+        font-size: 1.3em;
+        margin: 0px;
+        width: 100%;
+        text-align: center;
+    }
+    @media (min-width: @screen-m) and (max-width: @screen-xl){
+        font-size: 36px;
+        font-size: 4vw;
+    }
+    @media (min-width: @screen-xl){
+        font-size: 48px;
+    }
+}
+.nav-space {
+    @media (max-width: @screen-m) {
+        margin-top: 40px;
+    }
+    @media (min-width: @screen-m) {
+        margin-top: 80px;
+    }
+}
 .home-page {
 	display: table;
 	width: 100%;
@@ -17,6 +78,7 @@
     }
 
     & section {
+        overflow:auto;
         height: 100%;
         text-align: center;
         &.login-section,

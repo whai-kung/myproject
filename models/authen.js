@@ -157,10 +157,13 @@ accessTokenSchema.statics.verifyToken = function(model, callback){
         condition = [{'token':model.token}, {'refreshToken':model.token}]; 
     }
     accessTokenModel.findOne({ $or: condition }, function(err, accessToken){
-        if(err) return callback(err);
-        if(!accessToken) return callback(null, false);
-        if(accessToken.tokenActive()) return callback(null, true, accessToken);
-        if(accessToken.refreshTokenActive() || accessToken.remember_me){
+        if(err){
+            return callback(err);
+        }else if(!accessToken){
+            return callback(null, false, {message: 'No accessToken', code: 400});
+        }else if(accessToken.tokenActive()){
+            return callback(null, true, accessToken);
+        }else if(accessToken.refreshTokenActive() || accessToken.remember_me){
             var today = new Date();
             var length = config.oauth.token_expire;
             var refresh_length = config.oauth.refreshToken_expire;  
@@ -170,8 +173,9 @@ accessTokenSchema.statics.verifyToken = function(model, callback){
                 utils.log.notice("refresh token expire's time");
                 return callback(null, true, resultModel);
             });
+        }else{
+            return callback(null, false);
         }
-        callback(null, false);
     });
 }
 

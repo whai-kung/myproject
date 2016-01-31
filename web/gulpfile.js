@@ -115,6 +115,10 @@ gulp.task('serve', ['wiredep', 'connect', 'fonts', 'watch'], function() {
   }
 });
 
+gulp.task('react', ['browserify'], function() {
+
+});
+
 gulp.task('test', function(done) {
   karma.start({
     configFile: __dirname + '/test/karma.conf.js',

@@ -1,60 +1,3 @@
-//jQuery to collapse the navbar on scroll
-$(window).scroll(function() {
-    if ($(".navbar").offset().top > 50) {
-        $(".navbar-fixed-top").addClass("top-nav-collapse");
-    } else {
-        $(".navbar-fixed-top").removeClass("top-nav-collapse");
-    }
-});
-
-//jQuery for page scrolling feature - requires jQuery Easing plugin
-$(function() {
-    $('a.page-scroll').bind('click', function(event) {
-        var $anchor = $(this);
-        $('html, body').stop().animate({
-            scrollTop: $($anchor.attr('href')).offset().top
-        }, 1500, 'easeInOutExpo');
-        event.preventDefault();
-    });
-});
-
-function alertMessage(message, type){
-    /* priority
-     * warning      brown
-     * success      green
-     * info         blue
-     * danger       red
-     */
-    type = type || 'error';
-    var setting = {
-        'warning' : {
-            'priority'  : 'warning',
-            'title'     : 'Warning',
-            'timeout'   : 5000
-        },
-        'success' : {
-            'priority'  : 'success',
-            'title'     : 'Success',
-            'timeout'   : 3000
-        },
-        'error'   : {
-            'priority'  : 'danger',
-            'title'     : 'Error',
-            'timeout'   : 5000
-        },
-        'info'    : {
-            'priority'  : 'info',
-            'title'     : 'Info',
-            'timeout'   : 5000
-        }
-    };
-$.toaster({ priority : setting[type].priority, title : setting[type].title, message : message, 
-              settings: {
-                  timeout: setting[type].timeout
-              } 
-    });
-}
-
 /***********************************************************************************
 * Add Array.indexOf                                                                *
 ***********************************************************************************/
@@ -245,7 +188,3 @@ $.toaster({ priority : setting[type].priority, title : setting[type].title, mess
 		$.extend(settings, defaults);
 	};
 })(jQuery);
-
-// jQuery exists
-jQuery.fn.exists = function(){return this.length>0;}
-

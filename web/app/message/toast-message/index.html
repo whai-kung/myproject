@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery toastr8 Demos</title>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link href="dist/css/toastr8.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
+
+<body>
+<div class="container">
+<h1>jQuery toastr8 Demos</h1>
+<div class="jquery-script-ads" style="margin:30px auto;"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<button class="btn btn-info demo-1"><i class="fa fa-info"></i> Info</button>
+<button class="btn btn-error demo-2"><i class="fa fa-times"></i> Error</button>
+<button class="btn btn-warning demo-3"><i class="fa fa-ban"></i> Warning</button>
+<button class="btn btn-success demo-4"><i class="fa fa-check"></i> Success</button>
+<button class="btn btn-primary demo-5"><i class="fa fa-facebook"></i> Facebook</button>
+<button class="btn btn-primary demo-6"><i class="fa fa-twitter"></i> Twitter</button>
+<button class="btn btn-primary demo-7"><i class="fa fa-skype"></i> Skype</button>
+<button class="btn btn-primary demo-8"><i class="fa fa-android"></i> Android</button>
+<button class="btn btn-primary demo-9"><i class="fa fa-linkedin"></i> Linkedin</button>
+<button class="btn btn-primary demo-10"><i class="fa fa-windows"></i> Windows</button>
+<button class="btn btn-primary demo-11"><i class="fa fa-google-plus"></i> Google Plus</button>
+<button class="btn btn-primary demo-12"><i class="fa fa-github"></i> Github</button>
+<button class="btn btn-primary demo-12"><i class="fa fa-linux"></i> Linux</button>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="dist/js/toastr8.js"></script>
+<script>
+$(".demo-1").click(function(){
+toastr8.info({
+    message:'Toast message here', 
+    title:"Title here",
+    iconClass: "fa fa-info",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-2").click(function(){
+toastr8.error({
+    message:'Toast message here', 
+    title:"Title here",
+    iconClass: "fa fa-times",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-3").click(function(){
+toastr8.warning({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-4").click(function(){
+toastr8.success({
+    message:'Toast message here', 
+    title:"Title here",
+	iconClass: "fa fa-check",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-5").click(function(){
+toastr8.facebook({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-6").click(function(){
+toastr8.twitter({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-7").click(function(){
+toastr8.skype({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-8").click(function(){
+toastr8.android({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-9").click(function(){
+toastr8.linkedin({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-10").click(function(){
+toastr8.windows({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-11").click(function(){
+toastr8.googlePlus({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-12").click(function(){
+toastr8.github({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+
+$(".demo-13").click(function(){
+toastr8.linux({
+    message:'Toast message here', 
+    title:"Title here",
+    imgURI: ["https://unsplash.it/120/120?image=20"]
+});
+});
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

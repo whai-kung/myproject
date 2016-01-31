@@ -222,7 +222,9 @@ userSchema.statics.getAuthenticated = function(username, password, callback) {
                     $set: { loginAttempts: 0, lastActivity_at: Date.now() },
                     $unset: { lockUntil: 0 }
                 };
-                return user.update(updates, callback(err, user));
+                return user.update(updates, function(err, model){
+                    callback(err, user)
+                });
             }
 
             // password is incorrect, so increment login attempts before responding
