@@ -72,6 +72,18 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'views/login.html',
             controller: 'loginController'
         })
+        .state('signin', {
+            url: '/signin',
+            parent: 'baseHome',
+            templateUrl: 'views/signin.html',
+            controller: 'loginController'
+        })
+        .state('signup', {
+            url: '/signup',
+            parent: 'baseHome',
+            templateUrl: 'views/signup.html',
+            controller: 'signupController'
+        })
         .state('home', {
             url: '/home',
             parent: 'baseHome',
@@ -114,6 +126,20 @@ app.run(function ($q, $rootScope, $location, $cookieStore, $window, $document, D
             $rootScope.config = data; 
             var config = $rootScope.config;
             console.log(config.oauth, config.common, "rootScope.config");
+        });
+
+        var jqxhr = $.getJSON( "languages.json", function(languages) {
+            $rootScope.languages = languages;
+            console.log( languages , 'languages');
+        })
+        .done(function() {
+            //console.log( "second success" );
+        })
+        .fail(function() {
+            //console.log( "error" );
+        })
+        .always(function() {
+            //console.log( "complete" );
         });
     }
 
@@ -182,7 +208,16 @@ app.run(function ($q, $rootScope, $location, $cookieStore, $window, $document, D
         );
     };
 
-
+    $rootScope.goSignin = function() {
+        $location.path('/signin');
+    }
+    $rootScope.goSignup = function() {
+        $location.path('/signup');
+    }
+    $rootScope.goHome = function() {
+        $location.path('/homw');
+    }
+    
     // Redirect login function
     $rootScope.loginRedirect = function () {
         if ($cookieStore.get('logged_in')) {
@@ -228,5 +263,23 @@ app.directive('test', function () {
                 element.css('background-color', 'white');
             });
         }
+    };
+});
+app.directive("myNavscroll", function($window) {
+    return function(scope, element, attrs) {
+        angular.element($window).bind("scroll", function() {
+            console.log(this.pageTOffset, 'test');
+            if (!scope.scrollPosition) {
+                scope.scrollPosition = 0
+            }
+
+            if (this.pageYOffset > scope.scrollPosition) {
+                scope.boolChangeClass = true;
+            } else {
+                scope.boolChangeClass = false;
+            }
+            scope.scrollPosition = this.pageYOffset;
+            scope.$apply();
+        });
     };
 });

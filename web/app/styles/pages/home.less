@@ -1,93 +1,33 @@
-.nav {
-    background-color: @gray-lightest;
-    padding:2px;
-    /* screen-m : 768px */
-    @media (max-width: @screen-m) {
-        .form-group {
-            display:none; 
-        }
-    }
-    
-    @media (min-width: @screen-m) {
-        .btn {
-            padding: 2px 20px;
-            margin-left: 5px;
-            font-size: 1.3em;
-        }
-        .form-group {
-            width: 100%;
-            .column {
-                width:180px; 
-                font-size: 10px;
-                display: inline-table;
-                input[type='text'], input[type='password'] {
-                    width: 180px;
-                }
-                .line2 {
-                    line-height: 12px;     
-                    vertical-align: middle;
-                    font-weight: bold;
-                }
-            }
-        }
-    }
-}
-.brand {
-    font-weight: bold;
-    text-shadow: 4px 4px 4px @gray-lighter;
-    font-family: 'Varela Round', sans-serif;
-    padding: 5px;
-    @media (max-width: @screen-m) {
-        font-size: 1.3em;
-        margin: 0px;
-        width: 100%;
-        text-align: center;
-    }
-    @media (min-width: @screen-m) and (max-width: @screen-xl){
-        font-size: 36px;
-        font-size: 4vw;
-    }
-    @media (min-width: @screen-xl){
-        font-size: 48px;
-    }
-}
-.nav-space {
-    @media (max-width: @screen-m) {
-        margin-top: 40px;
-    }
-    @media (min-width: @screen-m) {
-        margin-top: 80px;
-    }
-}
 .home-page {
-	display: table;
-	width: 100%;
-	height: 100%;
-	position: relative;
-    @media(min-width: @screen-m) {
-        .navbar {
-            padding: 20px 0;
-            -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
-            -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
-            transition: background .5s ease-in-out,padding .5s ease-in-out;
-        }
-
-        .top-nav-collapse {
-            padding: 0;
-        }
-    }
-
+    display: table;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url(/images/freedom.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     & section {
-        overflow:auto;
+        display: table;
+        width: 100%;
         height: 100%;
         text-align: center;
-        &.login-section,
-        &.services-section {
-            background: #fff;
+        &.signup-section{
+            background: url(/images/where-are-you.jpg) no-repeat;
+            background-size: cover;
+            .signup, .signin {
+                color: white!important;
+            }
         }
-        &.about-section,
+        &.about-section{
+            background: @gray-lightest;
+        }
+        &.services-section {
+            background: inherit;
+        }
         &.contact-section {
-            background: #eee;
+            background: @gray-lightest;
         }
     }
 
@@ -238,7 +178,7 @@
 	}
 }
 
-@media (max-width: @screen-m) {
+@media (max-width: @max-screen-m) {
 	.home-page {
 		&:before {
 			content: '';

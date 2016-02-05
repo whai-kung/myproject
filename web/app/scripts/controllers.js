@@ -5,7 +5,7 @@ app.controller('loginController', function($scope, $location, $cookieStore, Logi
     $scope.user = {};
     $scope.user.username = "user@mail.com";
     $scope.user.password = "password";
-
+   
     // Redirect already logged in.
     if ($scope.logged_in) {
         $scope.loginRedirect();
@@ -35,6 +35,66 @@ app.controller('loginController', function($scope, $location, $cookieStore, Logi
     }
 
 });
+app.controller('signupController', function($scope, $location, $cookieStore, Login) {
+    'use strict';
+
+    $scope.user = {};
+    $scope.user.username = "user@mail.com";
+    $scope.user.password = "password";
+ 
+    $scope.user.languages = [];
+    $scope.language = { 
+        name: "",
+        level: ""
+    }
+    $scope.addLanguage = function(){
+        $scope.user.languages.push($scope.language);    
+        $scope.language = { 
+            name: "",
+            level: ""
+        }
+    }
+    $scope.removeLanguage = function(key){
+        for(var i=0;i<$scope.user.languages.length;i++)
+        {
+            if($scope.user.languages[i].name == key){
+                $scope.user.languages[i] = {};
+                break;
+            }
+        }
+    }
+
+    // Redirect already logged in.
+    if ($scope.logged_in) {
+        $scope.loginRedirect();
+        return;
+    }
+
+    $scope.nextStep = false;
+    $scope.submit = function() {
+        console.log($scope, "scope");
+        Login.login( {},
+            {
+                app_id      : $scope.config.oauth.app_id,
+                username    : $scope.user.username,
+                password    : $scope.user.password
+            },
+            function (data) {
+                if(data.code){
+                    alertMessage(data.message); 
+                }else{
+                    alertMessage(data.message, 'success');
+                    $scope.verifyCookie($scope.loginRedirect);
+                }
+            },
+            function (err) {
+                alertMessage(err.message);
+            }
+        );
+    }
+
+});
+
 
 // feed
 app.controller('homeController', function($scope, $location) {

@@ -1,0 +1,114 @@
+<div class="signup">
+    <div class="title"><h1>Become a penguin</h1></div>
+    <form class="form-horizontal" role="signup" ng-controller="signupController">
+        <div class="" ng-hide="nextStep">
+            <div class="form-group has-feedback">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-3 control-label" for="email">Email</label>
+                <div class="col-sm-4 has-success">
+                    <input type="text" class="form-control" id="email" ng-model="user.username" placeholder="Enter email">
+                    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-3 control-label" for="password">Password</label>
+                <div class="col-sm-4 has-warning">
+                    <input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Enter Password">
+                    <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-3 control-label" for="confirmPassword">Confirm Password</label>
+                <div class="col-sm-4 has-error">
+                    <input type="password" class="form-control" id="confirm_password" ng-model="user.confirm_password" placeholder="Enter password again">
+                    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-3 control-label" for="firstname">Fist name</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="firstname" ng-model="user.firstname" placeholder="Enter first name">
+                    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-3 control-label" for="lastname">Last name</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="lastname" ng-model="user.lastname" placeholder="Enter last name">
+                    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group gender">
+                <div class="col-sm-4 hide-on-device"></div>
+                <label class="col-sm-3 control-label" for="gender">Gender</label>
+                <div class="col-sm-4">
+                    <label>
+                        <input type="radio" name="gender" value="M" ng-model="user.gender">Male
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="F" ng-model="user.gender">Female
+                    </label>
+                </div>
+            </div>
+        </div>       
+        <div class="" ng-show="nextStep">
+            <div class="">
+                <ul ng-repeat="item in user.languages">
+                    <li>{{item.name}}</li>
+                    <li>{{item.level}}</li>
+                    <li><button class="btn btn-primary" ng-click="removeLanguage(item.name)">Remove</button></li>
+                </ul>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4 hide-on-device"></div>
+                <label class="col-sm-3 control-label" for="languages">Languages</label>
+                <div class="col-sm-4">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{language.name?language.name:'Languages'}}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="prop in languages" ng-click="language.name = prop.key" ng-class="{selected: prop.key == language.name}">{{prop.value}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4 hide-on-device"></div>
+                <label class="col-sm-3 control-label" for="language_level">Lavel</label>
+                <div class="col-sm-4">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{language.level?language.level:'Level'}}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ng-click="language.level = 'Native'" ng-class="">Native</li>
+                            <li ng-click="language.level = 'Fluent'" ng-class="">Fluent</li>
+                            <li ng-click="language.level = 'Intermediate'" ng-class="">Intermediate</li>
+                            <li ng-click="language.level = 'Learning'" ng-class="">Learning</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-7 hide-on-device"></div>
+                <div class="col-sm-4">
+                    <button class="btn btn-primary btn-more" type="button" ng-click="addLanguage()" >
+                        Add more language
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-7 col-sm-4 btn-panel">
+                <button class="btn btn-primary left" ng-click="goSignin()" ng-hide="nextStep">Sign in</button>
+                <button class="btn btn-primary {{nextStep?'left':'right'}}" ng-click="nextStep=!nextStep">{{nextStep?'Back':'Next'}}</button>
+                <button class="btn btn-primary right" type="submit" ng-show="nextStep">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

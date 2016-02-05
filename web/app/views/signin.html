@@ -1,0 +1,39 @@
+<div class="signin">
+    <div class="title"><h1>Login</h1></div>
+    <form class="" role="login" ng-submit="submit()" ng-controller="loginController">
+        <div class="">
+            <div class="row">
+                <div class="col-sm-2 hide-on-device text-right">
+                    <label for="email">Email</label>
+                </div>
+                <div class="col-xs-12 col-sm-10">
+                    <input type="text" ng-model="user.username" class="form-control" placeholder="Email" require>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 hide-on-device text-right">
+                    <label for="password">Password</label>
+                </div> 
+                <div class="col-xs-12 col-sm-10">
+                    <input type="password" ng-model="user.password" class="form-control" placeholder="Password" require>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10 col-sx-12">
+                    <span class="left"><input id="Option" type="checkbox" class=""> Remember me</span>
+                    <span class="right">Forgot password?</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button class="col-sm-offset-2 btn btn-primary left" ng-click="goSignup()">     
+                        Sign up
+                    </button>
+                    <button class="btn btn-primary right" type="submit">     
+                        Sign in
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

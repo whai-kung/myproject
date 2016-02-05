@@ -1,0 +1,51 @@
+.signup {
+    padding-right: 20px;
+    padding-left: 20px;
+    color: @gray-light;
+    text-align: left;
+    .title {
+        width: 100%;
+        text-align: center;
+    }
+    .left {
+        float: left;
+    }
+    .right{
+        float: right;
+    }
+    .dropdown-toggle {
+        width: 100%;
+    }
+    .btn-more {
+        width: 100%;
+    }
+    
+    @media (max-width: @max-screen-xs) {
+        .title>h1 {
+            font-size: 28px;
+            line-height: 24px;
+        }
+        label {
+            font-size: 12px;
+        }
+        .radio {
+            padding-top: 0px; 
+        }
+        .form-group {
+            margin-bottom: 0px;
+        }
+    } 
+    @media (max-width: @max-screen-s) {
+        .form-group {
+            padding: 0px; 
+        }
+    }
+    @media (max-width: @max-screen-m) {
+        .gender {
+            display: -webkit-inline-box;
+        }
+        .btn-panel {
+            text-align: right;
+        }
+    }
+}
