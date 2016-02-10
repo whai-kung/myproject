@@ -45,13 +45,22 @@ app.controller('signupController', function($scope, $location, $cookieStore, Log
     $scope.user.languages = [];
     $scope.language = { 
         name: "",
-        level: ""
+        level: "",
+        error: {}
     }
     $scope.addLanguage = function(){
-        $scope.user.languages.push($scope.language);    
-        $scope.language = { 
-            name: "",
-            level: ""
+        if($scope.language.name || $scope.language.level){
+            $scope.user.languages.push($scope.language);    
+            $scope.language = { 
+                name: "",
+                level: "",
+                error: {}
+            } 
+        }else{
+            $scope.language.error = {
+                type: 'error',
+                message: 'Language and Level are required'
+            }    
         }
     }
     $scope.removeLanguage = function(key){

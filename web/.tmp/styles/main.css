@@ -6462,6 +6462,146 @@ button.close {
     display: none !important;
   }
 }
+.ui-base {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  background: #eeeeee;
+  /*show scroll when hover
+    :hover { overflow-y:scroll; }
+    @media (max-width: @max-screen-m) {
+        :hover { overflow-y:auto; }
+    }*/
+}
+.baseHome {
+  overflow-y: inherit;
+}
+.baseHome .content-body {
+  /* screen-m : 768px */
+}
+@media (max-width: 767px) {
+  .baseHome .content-body {
+    padding-top: 45px;
+  }
+}
+@media (min-width: 768px) {
+  .baseHome .content-body {
+    padding-top: 70px;
+  }
+}
+.baseHome .navbar {
+  z-index: 999;
+  width: 100%;
+  left: 0px;
+  background-color: white;
+  border-bottom: solid 2px #d9d9d9;
+  /* screen-m : 768px */
+}
+@media (max-width: 767px) {
+  .baseHome .navbar {
+    min-height: initial;
+    height: 45px!important;
+  }
+  .baseHome .navbar .form-group,
+  .baseHome .navbar .navbar-form {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  .baseHome .navbar {
+    height: 70px!important;
+  }
+  .baseHome .navbar .btn {
+    padding: 2px 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 1.3em;
+  }
+  .baseHome .navbar .form-group .column {
+    width: 164px;
+    font-size: 10px;
+    display: inline-table;
+  }
+  .baseHome .navbar .form-group .column input[type='text'],
+  .baseHome .navbar .form-group .column input[type='password'] {
+    width: 164px;
+  }
+  .baseHome .navbar .form-group .column .line2 {
+    line-height: 12px;
+    vertical-align: middle;
+    font-weight: bold;
+  }
+}
+.baseHome .brand {
+  font-weight: bold;
+  text-shadow: 4px 4px 4px #d9d9d9;
+  font-family: 'Varela Round', sans-serif;
+  vertical-align: -webkit-baseline-middle;
+}
+@media (max-width: 767px) {
+  .baseHome .brand {
+    font-size: 1.3em;
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .baseHome .brand {
+    display: -webkit-inline-box;
+    font-size: 36px;
+    font-size: 3.5vw;
+  }
+}
+@media (min-width: 992px) {
+  .baseHome .brand {
+    font-size: 36px;
+  }
+}
+@media (max-width: 767px) {
+  .hide-on-device {
+    display: none;
+  }
+}
+html,
+body {
+  font-family: 'Open Sans', serif;
+  font-size: 15px;
+  height: auto !important;
+  min-height: 100%;
+  height: 100%;
+  overflow: auto!important;
+}
+p,
+input,
+textarea {
+  font-family: 'Varela Round', serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Pacifico', sans-serif;
+}
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.dropdown-menu li {
+  padding: 0px 5px;
+}
+.dropdown-menu li:hover {
+  background: #d9d9d9;
+  cursor: pointer;
+}
+.dropdown-menu li.selected {
+  background: #d9d9d9;
+}
 .home-page {
   display: table;
   position: absolute;
@@ -6483,6 +6623,10 @@ button.close {
 .home-page section.signup-section .signup,
 .home-page section.signup-section .signin {
   color: white!important;
+}
+.home-page section.signup-section .signup .dropdown-menu,
+.home-page section.signup-section .signin .dropdown-menu {
+  color: #555555;
 }
 .home-page section.about-section {
   background: #eeeeee;
