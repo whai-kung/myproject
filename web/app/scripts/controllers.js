@@ -35,7 +35,7 @@ app.controller('loginController', function($scope, $location, $cookieStore, Logi
     }
 
 });
-app.controller('signupController', function($scope, $location, $cookieStore, Login) {
+app.controller('signupController', function($rootScope, $scope, _, $location, $cookieStore, Login) {
     'use strict';
 
     $scope.user = {};
@@ -44,33 +44,39 @@ app.controller('signupController', function($scope, $location, $cookieStore, Log
  
     $scope.user.languages = [];
     $scope.language = { 
+        obj: {},
         name: "",
-        level: "",
-        error: {}
+        level: ""
     }
+
+    $rootScope.getLanguages(function(err, languages){
+        if(!err){
+            $scope.languages = languages;
+        }
+    });
+
     $scope.addLanguage = function(){
-        if($scope.language.name || $scope.language.level){
+        if(!_.isEmpty($scope.language.obj) && $scope.language.level){
             $scope.user.languages.push($scope.language);    
+            removeObj($scope.languages, 'key', $scope.language.name);
             $scope.language = { 
+                obj: {},
                 name: "",
-                level: "",
-                error: {}
+                level: ""
             } 
         }else{
-            $scope.language.error = {
-                type: 'error',
-                message: 'Language and Level are required'
-            }    
+            var message = 'Language and Level are required';
+            alertMessage(message, 'warning');
         }
     }
     $scope.removeLanguage = function(key){
-        for(var i=0;i<$scope.user.languages.length;i++)
-        {
-            if($scope.user.languages[i].name == key){
-                $scope.user.languages[i] = {};
-                break;
+        $scope.languages.forEach(function(v, i){
+            if(v.name === key){
+                $scope.languages.push(v.obj);
             }
-        }
+        }); 
+        _.sortBy($scope.languages, function(o) { return o.key; })
+        removeObj($scope.user.languages, 'name', key);
     }
 
     // Redirect already logged in.

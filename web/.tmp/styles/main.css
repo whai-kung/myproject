@@ -6622,6 +6622,7 @@ h6 {
 }
 .home-page section.signup-section .signup,
 .home-page section.signup-section .signin {
+  background: transparent;
   color: white!important;
 }
 .home-page section.signup-section .signup .dropdown-menu,
@@ -6836,6 +6837,7 @@ h6 {
   }
 }
 .signup {
+  background: #eeeeee;
   padding-right: 20px;
   padding-left: 20px;
   color: #777777;
@@ -6857,6 +6859,9 @@ h6 {
 .signup .btn-more {
   width: 100%;
 }
+.signup .languages-list {
+  list-style-type: none;
+}
 @media (max-width: 320px) {
   .signup .title > h1 {
     font-size: 28px;
@@ -6870,6 +6875,9 @@ h6 {
   }
   .signup .form-group {
     margin-bottom: 0px;
+  }
+  .signup .form-group .btn-primary {
+    margin-top: 10px;
   }
 }
 @media (max-width: 479px) {

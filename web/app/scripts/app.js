@@ -31,6 +31,10 @@ app.factory('httpInterceptor', function ($q, $location, $rootScope, $cookieStore
     };
 });
 
+app.constant('_',
+    window._
+);
+
 // Routes
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     'use strict';
@@ -127,10 +131,13 @@ app.run(function ($q, $rootScope, $location, $cookieStore, $window, $document, D
             var config = $rootScope.config;
             console.log(config.oauth, config.common, "rootScope.config");
         });
+    }
 
-        var jqxhr = $.getJSON( "languages.json", function(languages) {
-            $rootScope.languages = languages;
+    // Get languages list
+    $rootScope.getLanguages = function(callback){
+        $.getJSON( "languages.json", function(languages) {
             console.log( languages , 'languages');
+            callback(null, languages);
         })
         .done(function() {
             //console.log( "second success" );

@@ -1,4 +1,5 @@
 .signup {
+    background: @gray-lightest;
     padding-right: 20px;
     padding-left: 20px;
     color: @gray-light;
@@ -19,6 +20,9 @@
     .btn-more {
         width: 100%;
     }
+    .languages-list {
+        list-style-type: none;
+    }
     
     @media (max-width: @max-screen-xs) {
         .title>h1 {
@@ -33,6 +37,9 @@
         }
         .form-group {
             margin-bottom: 0px;
+            .btn-primary {
+                margin-top: 10px;
+            }
         }
     } 
     @media (max-width: @max-screen-s) {
