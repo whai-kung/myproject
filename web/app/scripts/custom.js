@@ -1,6 +1,26 @@
+/** Converts numeric degrees to radians */
+if (typeof(Number.prototype.toRadians) === "undefined") {
+    Number.prototype.toRadians= function() {
+        return this * Math.PI / 180;
+    }
+}
+
+
 $(function(){
     
 });
+
+function getDistance(location1, location2){
+    var R = 6371; // Radius of the earth in km
+    var dLat = (location2.lat-location1.lat).toRadians();  // Javascript functions in radians
+    var dLon = (location2.lng-location1.lng).toRadians(); 
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(location1.lat.toRadians()) * Math.cos(location2.lat.toRadians()) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+}
 
 function removeObj(arr, attr, value){
     var i = arr.length;
@@ -53,10 +73,10 @@ function alertMessage(message, type){
             'timeout'   : 5000
         }
     };
-$.toaster({ priority : setting[type].priority, title : setting[type].title, message : message, 
-              settings: {
-                  timeout: setting[type].timeout
-              } 
+    $.toaster({ priority : setting[type].priority, title : setting[type].title, message : message, 
+          settings: {
+              timeout: setting[type].timeout
+          } 
     });
 }
 

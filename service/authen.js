@@ -39,7 +39,7 @@ module.exports = {
     create: function(req, res, callback) {
         utils.log.notice('user/create', JSON.stringify(req.body));
         var newUser = req.body;
-        if(!newUser.password) return callback({message:"password is required!!", code:400});
+        if(!newUser.user.password) return callback({message:"password is required!!", code:400});
         db.user.createNewUser(newUser, function(err, user, count){
             if(err){
                 utils.log.error('create user', err);

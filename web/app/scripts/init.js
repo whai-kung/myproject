@@ -17,7 +17,10 @@ var
     },
     current_environment = false,
     cert                = 'cert/public.key.pem',
-    app_server          = '';
+    app_server          = '',
+    third_party         = {
+        'google'    : {} 
+    };
 
 // Set the current environment based on detected hostname.
 if (hosts.hasOwnProperty(window.location.host)) {

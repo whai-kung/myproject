@@ -1,36 +1,48 @@
 <div class="signup">
     <div class="title"><h1>Become a penguin</h1></div>
-    <form class="form-horizontal" role="signup" ng-controller="signupController">
+    <form class="form-horizontal" role="signup" ng-controller="signupController" name="signup">
         <div class="" ng-hide="nextStep">
             <div class="form-group has-feedback">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-3 control-label" for="email">Email</label>
-                <div class="col-sm-4 has-success">
-                    <input type="text" class="form-control" id="email" ng-model="user.username" placeholder="Enter email">
-                    <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                <div class="col-sm-4" ng-class="signup.email.$error.required?'has-warning':signup.email.$error.email?'has-error':'has-success'">
+                    <input type="email" class="form-control" id="email" name="email" ng-model="user.username" placeholder="Enter email" required>
+                    <div role="alert">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="signup.email.$error.required"></span>
+                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="signup.email.$error.email"></span>
+                        <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="signup.$valid"></span>
+                    </div>
                 </div>
             </div>
             <div class="form-group has-feedback">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-3 control-label" for="password">Password</label>
-                <div class="col-sm-4 has-warning">
-                    <input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Enter Password">
-                    <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                <div class="col-sm-4" ng-class="signup.email.$error.required?'has-warning':validatePassword(user.password).isCorrect?'has-success':'has-error'">
+                    <input type="password" class="form-control" id="password" name="password" ng-model="user.password" placeholder="Enter Password" required>
+                    <div role="alert">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="signup.email.$error.required"></span>
+                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-hide="validatePassword(user.password).isCorrect"></span>
+                        <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="validatePassword(user.password).isCorrect"></span>
+                    </div>
                 </div>
             </div>
             <div class="form-group has-feedback">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-3 control-label" for="confirmPassword">Confirm Password</label>
-                <div class="col-sm-4 has-error">
-                    <input type="password" class="form-control" id="confirm_password" ng-model="user.confirm_password" placeholder="Enter password again">
-                    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                <div class="col-sm-4" ng-class="signup.confirm_password.$error.required?'has-warning':user.password==user.confirm_password?'has-success':'has-error'">
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" ng-model="user.confirm_password" placeholder="Enter password again">
+                    <div role="alert">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="signup.email.$error.required"></span>
+                        <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="user.password!=user.confirm_password"></span>
+                        <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="user.password==user.confirm_password"></span>
+                    </div>
                 </div>
             </div>
             <div class="form-group has-feedback">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-3 control-label" for="firstname">Fist name</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="firstname" ng-model="user.firstname" placeholder="Enter first name">
+                    <input type="text" class="form-control" id="firstname" ng-model="user.profile.firstname" placeholder="Enter first name">
                     <span class="glyphicon glyphicon-ok form-control-feedback"></span>
                 </div>
             </div>
@@ -38,7 +50,7 @@
                 <div class="col-sm-4"></div>
                 <label class="col-sm-3 control-label" for="lastname">Last name</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="lastname" ng-model="user.lastname" placeholder="Enter last name">
+                    <input type="text" class="form-control" id="lastname" ng-model="user.profile.lastname" placeholder="Enter last name">
                     <span class="glyphicon glyphicon-ok form-control-feedback"></span>
                 </div>
             </div>
@@ -47,15 +59,29 @@
                 <label class="col-sm-3 control-label" for="gender">Gender</label>
                 <div class="col-sm-4">
                     <label>
-                        <input type="radio" name="gender" value="M" ng-model="user.gender">Male
+                        <input type="radio" name="gender" value="M" ng-model="user.profile.gender">Male
                     </label>
                     <label>
-                        <input type="radio" name="gender" value="F" ng-model="user.gender">Female
+                        <input type="radio" name="gender" value="F" ng-model="user.profile.gender">Female
                     </label>
                 </div>
             </div>
         </div>       
-        <div class="" ng-show="nextStep">
+        <div class="" ng-show="nextStep" cg-busy="load">
+            <div class="form-group has-feedback">
+                <div class="col-sm-4 hide-on-device"></div>
+                <label class="col-sm-3 control-label" for="City">City</label>
+                <div class="col-sm-4">
+                    <input ng-model="user.profile.location.city" class="form-control">
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="col-sm-4 hide-on-device"></div>
+                <label class="col-sm-3 control-label" for="Country">Country</label>
+                <div class="col-sm-4">
+                    <input ng-model="user.profile.location.country" class="form-control">
+                </div>
+            </div>
             <div class="form-group has-feedback">
                 <div class="col-sm-4 hide-on-device"></div>
                 <label class="col-sm-3 control-label" for="languages">Languages</label>
@@ -65,7 +91,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li ng-repeat="prop in languages" ng-click="language.obj.key = prop.key;language.obj.value = prop.value;language.name = prop.key" ng-class="{selected: prop.key == language.obj.key}">{{prop.value}}</li>
+                            <li ng-repeat="lang in languages" ng-click="language.obj.key = lang.key;language.obj.value = lang.value;language.name = lang.key" ng-class="{selected: lang.key == language.obj.key}">{{lang.value}}</li>
                         </ul>
                     </div>
                 </div>
@@ -96,7 +122,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <ul class="languages-list" ng-repeat="item in user.languages">
+                <ul class="languages-list" ng-repeat="item in user.profile.languages">
                     <li class="col-sm-4 hide-on-device"></li>
                     <li class="col-sm-3 left">{{item.name}}</li>
                     <li class="col-sm-3 left">{{item.level}}</li>
@@ -108,7 +134,7 @@
             <div class="col-sm-offset-7 col-sm-4 btn-panel">
                 <button class="btn btn-primary left" ng-click="goSignin()" ng-hide="nextStep">Sign in</button>
                 <button class="btn btn-primary {{nextStep?'left':'right'}}" ng-click="nextStep=!nextStep">{{nextStep?'Back':'Next'}}</button>
-                <button class="btn btn-primary right" type="submit" ng-show="nextStep">Submit</button>
+                <button class="btn btn-primary right" type="submit" ng-click="submit()" ng-show="nextStep && validate" >Submit</button>
             </div>
         </div>
     </form>

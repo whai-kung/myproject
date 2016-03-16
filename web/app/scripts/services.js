@@ -22,7 +22,18 @@ appServices.factory('Login', ['$resource', function ($resource) {
         app_server + '/auth/signin',
         {},
         {
-            login: {
+            signin : {
+                method  : 'POST',
+                isArray : false,
+                headers : {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                },
+                transformRequest: function(data){
+                    return $.param(data);
+                }
+            },
+            signup : {
+                url     : app_server + '/auth/signup',
                 method  : 'POST',
                 isArray : false,
                 headers : {
@@ -87,3 +98,26 @@ appServices.factory('User', ['$resource', function ($resource) {
         }
     );
 }]);
+
+// Map
+appServices.factory('Map', ['$resource', function ($resource, $scope) {
+    'use strict';
+    return $resource(
+        third_party.google.map['uri'],
+        {},
+        {
+            getAddress: {
+                url     : third_party.google.map['uri'] + 'latlng=:lat,:lng&key=' + third_party.google.map['key'],
+                method  : 'GET',
+                params  : {
+                    lat     : '@lat',
+                    lng     : '@lng'
+                },
+                isArray : false
+            }       
+        }
+    );
+}]);
+
+
+

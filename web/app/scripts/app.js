@@ -44,8 +44,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
      * Make sure server is returning this HTTP header:
      * Access-Control-Allow-Origin: *
     */
+    
     $httpProvider.defaults.useXDomain = true;
-    $httpProvider.defaults.withCredentials = true;
+    //$httpProvider.defaults.withCredentials = true;
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
 
     // Inject authInterceptor.
@@ -128,8 +129,8 @@ app.run(function ($q, $rootScope, $location, $cookieStore, $window, $document, D
     $rootScope.init = function() {
         Default.init({},{}, function(data){
             $rootScope.config = data; 
-            var config = $rootScope.config;
-            console.log(config.oauth, config.common, "rootScope.config");
+            let config = $rootScope.config;
+            third_party.google.map = config.common.map;
         });
     }
 
@@ -224,7 +225,65 @@ app.run(function ($q, $rootScope, $location, $cookieStore, $window, $document, D
     $rootScope.goHome = function() {
         $location.path('/homw');
     }
+    $rootScope.getAddress = function(address){
+        let location = {};
+        $.each(address, function (i, address_component) {
+
+            if (address_component.types[0] === "route"){
+                // Route
+                location.route = address_component.long_name;
+            }
+
+            if (address_component.types[0] === "locality"){
+                // Town
+                location.city = address_component.long_name;
+            }
+
+            if (address_component.types[0] === "country"){ 
+                // Country
+                location.country = address_component.short_name;
+            }
+
+            if (address_component.types[0] === "postal_code_prefix"){ 
+                // Zipcode 
+                location.zipcode= address_component.long_name;
+            }
+
+            if (address_component.types[0] === "street_number"){ 
+                // Street
+                location.street = address_component.long_name;
+            }
+            //return false; // break the loop   
+        });
+        location.text = location.city + ', ' + location.country;
+        return location;
+    }
     
+    $rootScope.validatePassword = function(password) {
+        let result = {
+            isCorrect: false,
+            message: "" 
+        }; 
+        if (password) {
+            if (password.length < 8) {
+                result.message = "too short";
+            } else if (password.length > 30) {
+                result.message = "too long";
+            } else if (password.search(/\d/) == -1) {
+                result.message = "no number";
+            } else if (password.search(/[a-z]/) == -1) {
+                result.message = "no small letter";
+            } else if (password.search(/[A-Z]/) == -1) {
+                result.message = "no capital leter";
+            } else if (password.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
+                result.message = "bad charecter";
+            } else {
+                result.isCorrect = true;
+            }
+        }
+        return result;
+    }
+
     // Redirect login function
     $rootScope.loginRedirect = function () {
         if ($cookieStore.get('logged_in')) {
@@ -252,6 +311,13 @@ app.filter("message", function(){
 app.filter("hot", function(){
     return function(msg){
         if(msg) return '<p class="font-effect-fire-animation">' + msg + '</p>';
+        return "";
+    }
+});
+
+app.filter("location", function(){
+    return function(location){
+        if(location) return location.lat + ',' + location.lng;
         return "";
     }
 });

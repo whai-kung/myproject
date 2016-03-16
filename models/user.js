@@ -163,20 +163,21 @@ userSchema.statics.findById = function(user_id, callback){
 userSchema.statics.createNewUser = function(userModel, callback){
     // check duplicate
     var User = this;
+    userModel = userModel.user;
     User.findOne({ username: userModel.username },  function(err, user) {
         if(user){
             var err = new Error('This username already registed.');
             return callback(err); 
         }else{
             var user = new User({
-                username: userModel.username,
-                password: userModel.password,
-                firstname: userModel.firstname || userModel.username,
-                gender: userModel.gender,
-                email: {
+                username    : userModel.username,
+                password    : userModel.password,
+                gender      : userModel.gender,
+                email       : {
                     email: userModel.username,
                     type: "primary"
-                }
+                },
+                profile     : userModel.profile 
             });
             user.save(function(err, user, count) {
                 if(err) return callback(err);

@@ -34,6 +34,12 @@ var config = {
     redis: {
         server  : "172.0.0.1",
         port    : 6379
+    },
+    client: {
+        map: {
+            uri     : 'https://maps.googleapis.com/maps/api/geocode/json?',
+            key     : "AIzaSyDo61J1I1jXzNp6LyYWe7HWsZPf9QeOD1E"
+        }
     }
 }
 

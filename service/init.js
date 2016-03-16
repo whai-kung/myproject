@@ -8,8 +8,9 @@ var init = {
     },
     common  : {
         header  : config.oauth.header,
-        cookie  : config.oauth.cookie
-    },
+        cookie  : config.oauth.cookie,
+        map     : config.client.map
+    }
 }
 
 module.exports = {
